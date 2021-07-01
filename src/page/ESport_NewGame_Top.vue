@@ -58,14 +58,14 @@
   left: -8px;
   z-index: -1;
   background: url(../../static/images/category/113.png) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
 }
 .img_border.achange{
   background: url(../../static/images/category/115.png) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
 }
 .top_r_news li .imglazy {
-  
+
 }
 .top_r_news li:nth-child(2) {
   position: absolute;
@@ -90,14 +90,14 @@
   right: 68px;
   top: 2px;
   background: url(../../static/images/category/122.png) no-repeat 100% 100%;
-  background-size:100% 100%; 
+  background-size:100% 100%;
 }
 .top_r_news li:nth-child(6) {
  position: absolute;
   right: 68px;
   top: 146px;
   background: url(../../static/images/category/122.png) no-repeat 100% 100%;
-  background-size:100% 100%; 
+  background-size:100% 100%;
 }
 .top_r_news li:nth-child(1) {
   width: 480px;
@@ -112,7 +112,7 @@
 }
 .hover{
   position: absolute;
-  z-index: 99; 
+  z-index: 99;
   left: 0px;
   top: 0px;
   display: block;
@@ -126,7 +126,7 @@
   text-indent: 2em;
   margin-left:13px;
   margin-top:13px;
-  display: block; 
+  display: block;
 }
 .hover .oo{
   width: 132px;
@@ -135,7 +135,7 @@
   text-indent: 2em;
   margin-left:33px;
   margin-top:23px;
-  display: block;  
+  display: block;
 }
 .activess{
   position: absolute;
@@ -143,7 +143,7 @@
   height: 100%;
   background: url(../../static/images/category/108.png) no-repeat;
   background-size:100% 100%;
-  z-index: 99; 
+  z-index: 99;
   left: 0px;
   top: 0px;
 }
@@ -152,7 +152,7 @@
   width: 100%;
   height: 100%;
   border: 4px solid #00FFF5;
-  z-index: 99; 
+  z-index: 99;
   left: -2px;
   top: -2px;
 }
@@ -161,7 +161,7 @@
   width: 100%;
   height: 100%;
   background: rgb(0, 24, 67, 0.3);
-  z-index: 99; 
+  z-index: 99;
   left: 0px;
   top: 0px;
 }
@@ -171,7 +171,7 @@ import { mapGetters } from 'vuex';
 import { bp as bi } from '../js/ga.js';
 import { hp } from '../util/dom.js';
 import { yst } from '../js/yst.js';
-import c from "../js/common.js";
+import c from '../js/common.js';
 export default {
   props: ['initData', 'catCode', 'catId', 'itemSort'],
   name: 'IndexTopRecommend',
@@ -202,7 +202,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['behindParams', 'navpos','categorys'])
+    ...mapGetters(['behindParams', 'navpos', 'categorys'])
   },
   created () {
     this.load_start = new Date() - 0;
@@ -228,14 +228,14 @@ export default {
         this.enter();
       }
     },
-    enter(){
+    enter (){
       let posId = this.itemSort + '0' + (this.itemNo + 1);
       let columnId = '0' + this.navpos;
       c.setPosition(columnId, posId); // 保存推荐位置
       c.setParentPageType('0101');
       c.setParentPageId(this.categorys[this.navpos].catId);
       this.clickPage();
-      c.routerSkip(this.top[this.itemNo].jsonUrl,this.top[this.itemNo].elementType,this.top[this.itemNo].layout,{},this.$router);
+      c.routerSkip(this.top[this.itemNo].jsonUrl, this.top[this.itemNo].elementType, this.top[this.itemNo].layout, {}, this.$router);
     },
     back () {
       this.isActive = false;
@@ -243,36 +243,36 @@ export default {
       this.$emit('pressDown', this.isShow, this.eleId, 'back');
     },
     up () {
-      if(this.itemNo == 2 ||this.itemNo ==5){
+      if (this.itemNo == 2 || this.itemNo == 5){
         this.itemNo--;
-      }else{
+      } else {
         this.isActive = false;
         this.isShow = false;
         this.$emit('pressDown', this.isShow, this.eleId, 'up');
       }
     },
     down () {
-      if(this.itemNo == 1 ||this.itemNo ==4){
+      if (this.itemNo == 1 || this.itemNo == 4){
         this.itemNo++;
-      }else{
+      } else {
         this.isActive = false;
         this.isShow = false;
         this.$emit('pressDown', this.isShow, this.eleId, 'down');
       }
     },
     left () {
-      if(this.itemNo<=0)return;
-      if(this.itemNo ==2 ||this.itemNo ==3 ||this.itemNo ==5){
-        this.itemNo -=2;
-      }else{
+      if (this.itemNo <= 0) return;
+      if (this.itemNo == 2 || this.itemNo == 3 || this.itemNo == 5){
+        this.itemNo -= 2;
+      } else {
         this.itemNo--;
       }
     },
     right () {
-      if(this.itemNo>=this.initData.elementList.length-1)return;
-      if(this.itemNo == 1){
+      if (this.itemNo >= this.initData.elementList.length - 1) return;
+      if (this.itemNo == 1){
         this.itemNo += 2;
-      }else{
+      } else {
         this.itemNo++;
       }
     },

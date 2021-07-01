@@ -212,10 +212,10 @@ export default {
           console.log(error);
         }
         let url = this.assetList[this.itemNo].jsonUrl;
-        this.$router.push({ name: 'detail', params: { jsonUrl: url,bp:'filterResult' } });
+        this.$router.push({ name: 'detail', params: { jsonUrl: url, bp: 'filterResult' } });
       } else if (kc == 'KeyBack') {
         this.isShow = false;
-        this.$router.push({name:'index'})
+        this.$router.push({name: 'index'})
       }
     },
     getSql (sql) {
@@ -435,7 +435,7 @@ export default {
           }
         }
       );
-    },
+    }
   },
   computed: {
     ...mapGetters([

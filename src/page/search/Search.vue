@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<style scoped> 
+<style scoped>
   .search {
     width: 1280px;
     height: 720px;
@@ -284,207 +284,207 @@
 </style>
 
 <script>
-  import keyboard from './keyboard.vue';
-  import c from '../../js/common.js';
-  import {
-    HTTPUtil as api
-  } from "../../fetch/api.js";
-  import {
-    mapGetters
-  } from 'vuex';
-  export default {
-    name: 'search',
-    data() {
-      return {
-        isShow: false,
-        isHotSearch: true,
-        hotNum: -1, //推荐资产编号
-        searchNum: -1, //搜索资产编号
-        keyWord: '',
-        recommendData: [],
-        searchData: [],
-        haveSearchData: true,
-        total: 0, //搜索结果总页数
-        pageNum: 0, //当前搜索页码
-        pageIndex:0,
+import keyboard from './keyboard.vue';
+import c from '../../js/common.js';
+import {
+  HTTPUtil as api
+} from '../../fetch/api.js';
+import {
+  mapGetters
+} from 'vuex';
+export default {
+  name: 'search',
+  data () {
+    return {
+      isShow: false,
+      isHotSearch: true,
+      hotNum: -1, // 推荐资产编号
+      searchNum: -1, // 搜索资产编号
+      keyWord: '',
+      recommendData: [],
+      searchData: [],
+      haveSearchData: true,
+      total: 0, // 搜索结果总页数
+      pageNum: 0, // 当前搜索页码
+      pageIndex: 0
+    }
+  },
+  components: {
+    keyboard
+  },
+  created () {
+    this.getSearchRecommend();
+  },
+  activated () {
+    if (this.$route.params.type == 'search'){
+      // 组件被缓存时需要重新进行初始化
+      this.isShow = false;
+      this.isHotSearch = true;
+      this.$refs.kbc.keyword = '';
+      this.$refs.kbc.getKeyListen(0);
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'behindParams'
+    ])
+  },
+  watch: {
+    keyWord () {
+      if (this.keyWord.length === 0) {
+        this.isHotSearch = true
+      } else {
+        this.isHotSearch = false
+        this.pageNum = 0;
+        this.pageIndex = 0;
+        this.getSearchData(this.keyWord, this.pageIndex)
       }
-    },
-    components: {
-      keyboard
-    },
-    created() {
-      this.getSearchRecommend();
-    },
-    activated() {
-      if(this.$route.params.type == 'search'){
-        // 组件被缓存时需要重新进行初始化
-        this.isShow = false;
-        this.isHotSearch= true;
-        this.$refs.kbc.keyword = '';
-        this.$refs.kbc.getKeyListen(0);
-      }
-    },
-    computed: {
-      ...mapGetters([
-        'behindParams',
-      ])
-    },
-    watch: {
-      keyWord() {
-        if (this.keyWord.length === 0) {
-          this.isHotSearch = true
-        } else {
-          this.isHotSearch = false
-          this.pageNum = 0;
-          this.pageIndex = 0;
-          this.getSearchData(this.keyWord, this.pageIndex)
-        }
-      }
+    }
 
+  },
+  methods: {
+    getSearchRecommend () {
+      console.log('请求搜索推荐数据');
+      const url = api.getSearchHot + this.behindParams
+      api.jsonp(url, (res) => {
+        this.recommendData = res.data.hotAssetList
+      })
     },
-    methods: {
-      getSearchRecommend() {
-        console.log("请求搜索推荐数据");
-        const url = api.getSearchHot + this.behindParams
-        api.jsonp(url, (res) => {
-          this.recommendData = res.data.hotAssetList
-        })
-      },
-      getSearchData(keyWord, pageIndex) {
-        console.log("");
-        const url = api.getSearchData(keyWord, pageIndex)
-        api.jsonp(url, (res) => {
-          console.log(res);
-          if (res.data != null) {
-            this.searchData = res.data[0].resultList
-            if (res.data[0].resultNum <= 0) {
-              this.haveSearchData = false;
-            } else {
-              this.haveSearchData = true;
-            }
-          } else {
+    getSearchData (keyWord, pageIndex) {
+      console.log('');
+      const url = api.getSearchData(keyWord, pageIndex)
+      api.jsonp(url, (res) => {
+        console.log(res);
+        if (res.data != null) {
+          this.searchData = res.data[0].resultList
+          if (res.data[0].resultNum <= 0) {
             this.haveSearchData = false;
-          }
-
-          this.total = Math.ceil(res.data[0].resultNum / 9)
-        })
-      },
-      keepDo(isShow, keyWord, position) {
-        if (isShow) { //键值在左
-          if (position === "search") {
-            this.isHotSearch = false;
-            this.keyWord = keyWord
-          }
-        } else { //键值向右
-          this.isShow = true;
-          if (this.isHotSearch) {
-            this.hotNum = 0;
           } else {
-            this.searchNum = 0;
+            this.haveSearchData = true;
           }
+        } else {
+          this.haveSearchData = false;
         }
-      },
-      keyCode(kc) {
-        if (kc === "down") {
-          this.down();
-        } else if (kc === "up") {
-          this.up();
-        } else if (kc === "left") {
-          this.left();
-        } else if (kc === "right") {
-          this.right();
-        } else if (kc === "KeyEnter") {
-          this.KeyEnter();
-        } else if (kc === "KeyBack") {
-          // this.KeyBack();
-          this.isShow=false;
-          this.hotNum=this.searchNum=-1
+
+        this.total = Math.ceil(res.data[0].resultNum / 9)
+      })
+    },
+    keepDo (isShow, keyWord, position) {
+      if (isShow) { // 键值在左
+        if (position === 'search') {
+          this.isHotSearch = false;
+          this.keyWord = keyWord
+        }
+      } else { // 键值向右
+        this.isShow = true;
+        if (this.isHotSearch) {
+          this.hotNum = 0;
+        } else {
+          this.searchNum = 0;
+        }
+      }
+    },
+    keyCode (kc) {
+      if (kc === 'down') {
+        this.down();
+      } else if (kc === 'up') {
+        this.up();
+      } else if (kc === 'left') {
+        this.left();
+      } else if (kc === 'right') {
+        this.right();
+      } else if (kc === 'KeyEnter') {
+        this.KeyEnter();
+      } else if (kc === 'KeyBack') {
+        // this.KeyBack();
+        this.isShow = false;
+        this.hotNum = this.searchNum = -1
+        this.$refs.kbc.getKeyListen();
+      }
+    },
+    up () {
+      if (this.isHotSearch) return;
+      if (this.searchNum <= 2){
+
+      } else {
+        this.searchNum -= 3;
+      }
+    },
+    down () {
+      if (this.isHotSearch) return;
+      if (this.searchNum > this.searchData.length - 4) { // 最后一行或下面无资产
+        const num1 = Math.floor(this.searchData.length / 3) * 3;
+        if (this.searchNum >= num1 || num1 === this.searchData.length) { // 最后一行
+
+        } else { // 倒数第二行，下面无资产
+          this.searchNum = this.searchData.length - 1;
+        }
+      } else {
+        this.searchNum += 3
+      }
+    },
+    left () {
+      if (this.isHotSearch) {
+        if (this.hotNum === 0) {
+          this.isShow = false;
           this.$refs.kbc.getKeyListen();
         }
-      },
-      up() {
-        if (this.isHotSearch) return;
-        if(this.searchNum<=2){
-          return
-        } else {
-          this.searchNum-=3;
-        }
-      },
-      down() {
-        if (this.isHotSearch) return;
-        if (this.searchNum > this.searchData.length - 4) { //最后一行或下面无资产
-              const num1 = Math.floor(this.searchData.length / 3) * 3;
-              if (this.searchNum >= num1 || num1 === this.searchData.length) { //最后一行
-              return
-          } else { //倒数第二行，下面无资产
-            this.searchNum = this.searchData.length - 1;
-          }
-        } else {
-          this.searchNum+=3
-        }
-      },
-      left() {
-        if (this.isHotSearch) {
-          if (this.hotNum === 0) {
+        this.hotNum--
+      } else { // 搜索资产
+        if ((this.searchNum) % 3 === 0) { // 向左
+          if (this.pageNum === 0) { // 第一页的最左边
+            this.searchNum = -1;
             this.isShow = false;
             this.$refs.kbc.getKeyListen();
-          }
-          this.hotNum--
-        } else { //搜索资产
-          if ((this.searchNum) % 3 === 0) { //向左
-            if (this.pageNum === 0) {  //第一页的最左边
-              this.searchNum = -1;
-              this.isShow = false;
-              this.$refs.kbc.getKeyListen();
-            } else {  //非第一页最左边
-              this.pageNum--
-              this.pageIndex-=9;
-              this.getSearchData(this.keyWord, this.pageIndex)
-              this.$nextTick(() => {
-                this.searchNum = 0
-              })
-            }
-          } else {
-            this.searchNum--
-          }
-        }
-      },
-      right() {
-        if (this.isHotSearch) {
-          if (this.hotNum === 2) return
-          this.hotNum++
-        } else {  //搜索资产
-          if ((this.searchNum + 1) % 3 === 0 && this.pageNum < this.total - 1) { //非最后一页最右边
-            this.pageNum++
-            this.pageIndex+=9;
+          } else { // 非第一页最左边
+            this.pageNum--
+            this.pageIndex -= 9;
             this.getSearchData(this.keyWord, this.pageIndex)
             this.$nextTick(() => {
               this.searchNum = 0
             })
-          } else {
-            if(this.pageNum===this.total-1&&this.searchNum===this.searchData.length-1) return; //最后一页最后一个
-            this.searchNum++
           }
+        } else {
+          this.searchNum--
         }
-      },
-      KeyEnter() {
-        let url = '';
-        let layType = '';
-        let elementType = '';
-        c.setParentPageType('0201');
-        c.setParentPageId('100-1');
-        if(this.isHotSearch){
-          localStorage.setItem('BI_recmd_id', 1);
-          url = this.recommendData[this.hotNum].jsonUrl;
-          layType = this.recommendData[this.hotNum].layout;
-          elementType = this.recommendData[this.hotNum].elementType;
-        }else{
-          url = this.searchData[searchNum].jsonUrl;
-          layType = this.searchData[searchNum].layout;
-          elementType = this.searchData[searchNum].elementType;
+      }
+    },
+    right () {
+      if (this.isHotSearch) {
+        if (this.hotNum === 2) return
+        this.hotNum++
+      } else { // 搜索资产
+        if ((this.searchNum + 1) % 3 === 0 && this.pageNum < this.total - 1) { // 非最后一页最右边
+          this.pageNum++
+          this.pageIndex += 9;
+          this.getSearchData(this.keyWord, this.pageIndex)
+          this.$nextTick(() => {
+            this.searchNum = 0
+          })
+        } else {
+          if (this.pageNum === this.total - 1 && this.searchNum === this.searchData.length - 1) return; // 最后一页最后一个
+          this.searchNum++
         }
-        c.routerSkip(url,elementType.toString(),layType,{type:'search'},this.$router);
-      },
+      }
+    },
+    KeyEnter () {
+      let url = '';
+      let layType = '';
+      let elementType = '';
+      c.setParentPageType('0201');
+      c.setParentPageId('100-1');
+      if (this.isHotSearch){
+        localStorage.setItem('BI_recmd_id', 1);
+        url = this.recommendData[this.hotNum].jsonUrl;
+        layType = this.recommendData[this.hotNum].layout;
+        elementType = this.recommendData[this.hotNum].elementType;
+      } else {
+        url = this.searchData[searchNum].jsonUrl;
+        layType = this.searchData[searchNum].layout;
+        elementType = this.searchData[searchNum].elementType;
+      }
+      c.routerSkip(url, elementType.toString(), layType, {type: 'search'}, this.$router);
     }
   }
+}
 </script>

@@ -50,7 +50,7 @@
   width: 282px;
   height: 83px;
   background: url(../../static/images/category/919.png) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
   position: relative;
 }
 .hotp li .boxyx{
@@ -66,7 +66,7 @@
   width: 120px;
   height: 120px;
   background: url(../../static/images/category/1187.png) no-repeat 100% 100%;
-  background-size:100% 100%; 
+  background-size:100% 100%;
   position: absolute;
   left: 160px;
   top: -50px;
@@ -107,7 +107,7 @@ import { bp as bi } from '../js/ga.js';
 import { hp } from '../util/dom.js';
 import { yst } from '../js/yst.js';
 import c from '../js/common.js'
-import { client as yh} from '../js/client.js'; //播放器
+import { client as yh } from '../js/client.js'; // 播放器
 export default {
   props: ['initData', 'catCode', 'catId', 'itemSort'],
   name: 'hotPrograma',
@@ -139,7 +139,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['navpos','categorys'])
+    ...mapGetters(['navpos', 'categorys'])
   },
   created () {
     this.load_start = new Date() - 0;
@@ -169,7 +169,7 @@ export default {
         c.setPosition(columnId, posId); // 保存推荐位置
         c.setParentPageType('0101');
         c.setParentPageId(this.categorys[this.navpos].catId);
-         this.$store.commit('GET_ISSHOWPLAY', false);
+        this.$store.commit('GET_ISSHOWPLAY', false);
         // 关闭小窗口播放
         // 数据采集
         this.$emit('isremove');
@@ -205,9 +205,9 @@ export default {
         //   }
         // });
         c.routerSkip(this.hot[this.itemNo].jsonUrl,
-                      this.hot[this.itemNo].elementType,
-                      this.hot[this.itemNo].layout,{},
-                      this.$router);
+          this.hot[this.itemNo].elementType,
+          this.hot[this.itemNo].layout, {},
+          this.$router);
       }
     },
     clickPage () {

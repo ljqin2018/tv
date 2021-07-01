@@ -18,7 +18,7 @@
         ref="videoplayer"
         v-bind:psId="psId"
         v-bind:playerCore="playerCore"
-        v-bind:isFullScreen="false" 
+        v-bind:isFullScreen="false"
         v-bind:isFree="isFree"
         v-bind:isBought="isBought"
         v-bind:lastFocusId="lastFocusId"
@@ -182,7 +182,7 @@
     top: 0px;
     display: block;
     text-indent: 2em;
-    
+
 }
 .acckives{
     width: 101%;
@@ -265,14 +265,14 @@ import { bp as bi } from '../js/ga.js';
 import { hp } from '../util/dom.js';
 import { HTTPUtil as api } from '../fetch/api.js';
 import { yst } from '../js/yst.js';
-import c from "../js/common.js";
+import c from '../js/common.js';
 // import { client as yh} from '../js/client.js'; //播放器
 import VideoPlayer from '../page/play/VideoPlayer'
 import PlayCore from '../page/play/playerCode.js'
 import DetailRecordHelper from '../page/play/DetailRecordHelper'
 
 export default {
-  props: ['initData', 'catCode', 'catId', 'itemSort','isPlay'],
+  props: ['initData', 'catCode', 'catId', 'itemSort', 'isPlay'],
   name: 'IndexTopRecommend',
   data: function () {
     return {
@@ -290,7 +290,7 @@ export default {
       load_start: 0,
       load_time: 0,
       // 播放器传值
-      size:{x:293, y:164, width:474,height:260},
+      size: {x: 293, y: 164, width: 474, height: 260},
       playerCore: PlayCore.getPlayCore(),
       currShow: 0, // 0:主页  1：全集 2：简介 3：全屏
       // view管理
@@ -298,16 +298,16 @@ export default {
       classifyDirection: '',
       isFree: false,
       isBought: false,
-      detail:'',
-      psId:'',
+      detail: '',
+      psId: ''
     };
   },
- 
+
   created () {
     this.load_start = new Date() - 0;
     // window.play = this.play;
   },
-  activated(){
+  activated (){
     this.$store.commit('GET_EPISODE', 0);
     this.$store.commit('GET_ISSHOWPLAY', true);
     // this.$refs.videoplayer.nextPlay();
@@ -316,9 +316,9 @@ export default {
     this.load_time = new Date() - this.load_start;
     this.top = this.initData.elementList;
     this.eleId = this.initData.specialId;
-    this.getJsonPlay(this.top[3].jsonUrl+this.behindParams);
+    this.getJsonPlay(this.top[3].jsonUrl + this.behindParams);
   },
-  updated(){
+  updated (){
 
   },
   methods: {
@@ -364,33 +364,33 @@ export default {
           }
         }
         var url = this.top[this.itemNo].jsonUrl;
-        if (this.itemNo==3) {
-          if (this.top[3].elementType==10) {
+        if (this.itemNo == 3) {
+          if (this.top[3].elementType == 10) {
             // yh.AllinitPlay();
             // 直播
-          }else if (this.top[3].elementType==1) {
+          } else if (this.top[3].elementType == 1) {
             this.currShow = 3;
             let currentTime = 0;
             currentTime = this.$refs.videoplayer.getCurrentTime();
             this.$refs.videoplayer.destoryPlayer();
-            DetailRecordHelper.recordSchedule(this.detail.assetId,this.episode, currentTime);
+            DetailRecordHelper.recordSchedule(this.detail.assetId, this.episode, currentTime);
             this.$router.push({'name': 'play', params: {detailData: this.detail, currShow: this.currShow, playerCore: this.playerCore, psId: this.psId, isFree: this.isFree, isBought: this.isBought, isFullScreen: true}})
           }
         } else {
           // this.removrplay();
-          c.routerSkip(url,this.top[this.itemNo].elementType,this.top[this.itemNo].layout,{},this.$router);
+          c.routerSkip(url, this.top[this.itemNo].elementType, this.top[this.itemNo].layout, {}, this.$router);
         }
       }
     },
-    getJsonPlay(url){
-      api.jsonp(url,  (json)=> {
+    getJsonPlay (url){
+      api.jsonp(url, (json) => {
         if (json.code == 200 || json.code == '200') {
           console.warn(json);
           this.detail = json.data;
         }
       });
     },
-    isPlayNow(){
+    isPlayNow (){
       // 播放
       // if (this.top[3].elementType==10) {
       //   this.play();
@@ -398,28 +398,28 @@ export default {
       //   this.Dplay();
       // }
     },
-    removrplay(){
+    removrplay (){
       // if (this.top[3].elementType==10) {
       //   yh.closeView();
       // }else if (this.top[3].elementType==1) {
       //   yh.closePlayer();
       // }
     },
-    hideplay(){
+    hideplay (){
       // if (this.top[3].elementType==10) {
       //   yh.hideView();
       // }else if (this.top[3].elementType==1) {
       //   yh.hidePlayer();
       // }
     },
-    isshowplay(){
+    isshowplay (){
       // if (this.top[3].elementType==10) {
       //   yh.showView();
       // }else if (this.top[3].elementType==1) {
       //   yh.showPlayer();
       // }
     },
-    play(){
+    play (){
       // setTimeout(()=>{
       //     yh.Player(293,164,474,260);
       //     let url = this.top[3].jsonUrl;
@@ -427,57 +427,56 @@ export default {
       //     yh.showPlay(url,id);
       //   },500)
     },
-    Dplay(){
+    Dplay (){
       // setTimeout(()=>{
       //     yh.initPlayer(293,164,474,260);
       //     let url = this.top[3].jsonUrl;
       //     let id = this.top[3].elementId;
       //     yh.showVideo(url,id);
       //   },500)
-      },
+    },
     back () {
       this.isActive = false;
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'back');
     },
     up () {
-      if(this.itemNo == 0 ||this.itemNo ==3||this.itemNo ==4||this.itemNo ==6){
-
+      if (this.itemNo == 0 || this.itemNo == 3 || this.itemNo == 4 || this.itemNo == 6){
         this.isActive = false;
         this.isShow = false;
         this.$emit('pressDown', this.isShow, this.eleId, 'up');
-      }else{
+      } else {
         this.itemNo--;
       }
     },
     down () {
-      if(this.itemNo == 1 ||this.itemNo ==4||this.itemNo ==0){
+      if (this.itemNo == 1 || this.itemNo == 4 || this.itemNo == 0){
         this.itemNo++;
-      }else{
+      } else {
         this.isActive = false;
         this.isShow = false;
         this.$emit('pressDown', this.isShow, this.eleId, 'down');
       }
     },
     left () {
-      if(this.itemNo<=0 ||this.itemNo ==1 ||this.itemNo ==2)return;
-      if(this.itemNo ==4 ||this.itemNo ==5){
-        this.itemNo =3;
-      }else if(this.itemNo ==3){
-        this.itemNo=0;
-      }else if(this.itemNo ==6){
-        this.itemNo-=2;
-      }else {
+      if (this.itemNo <= 0 || this.itemNo == 1 || this.itemNo == 2) return;
+      if (this.itemNo == 4 || this.itemNo == 5){
+        this.itemNo = 3;
+      } else if (this.itemNo == 3){
+        this.itemNo = 0;
+      } else if (this.itemNo == 6){
+        this.itemNo -= 2;
+      } else {
         this.itemNo--;
       }
     },
     right () {
-      if(this.itemNo>=6)return;
-      if(this.itemNo==0 ||this.itemNo==1 ||this.itemNo==2){
+      if (this.itemNo >= 6) return;
+      if (this.itemNo == 0 || this.itemNo == 1 || this.itemNo == 2){
         this.itemNo = 3;
-      }else if(this.itemNo ==4){
-        this.itemNo+=2;
-      }else{
+      } else if (this.itemNo == 4){
+        this.itemNo += 2;
+      } else {
         this.itemNo++;
       }
     },
@@ -577,7 +576,7 @@ export default {
   },
   components: {VideoPlayer},
   computed: {
-    ...mapGetters(['behindParams', 'episode',  'smallScreenState', 'navpos','isShowPlay','categorys'])
-  },
+    ...mapGetters(['behindParams', 'episode', 'smallScreenState', 'navpos', 'isShowPlay', 'categorys'])
+  }
 };
 </script>

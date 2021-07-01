@@ -73,7 +73,6 @@ margin-left: 20px;
 margin-top: 20px;
 }
 
-
 .recommend-content li {
 float: left;
 width: 231px;
@@ -81,7 +80,7 @@ height: 130px;
 margin-left: 20px;
 margin-top: 20px;
 background: url("../../../assets/detail/img_230x130.png") no-repeat;
-background-size:100% 100%; 
+background-size:100% 100%;
 text-align: center;
 font-size: 20px;
 display: flex;
@@ -90,7 +89,7 @@ align-items: center;
 }
 .recommend-content li.active {
 background: url("../../../assets/detail/img_230x130_active.png") no-repeat;
-background-size:100% 100%; 
+background-size:100% 100%;
 }
 .recommend-content li div {
 width: 166px;
@@ -98,159 +97,159 @@ width: 166px;
 </style>
 
 <script>
-  import c from '../../../js/common.js';
-  import detailtop from "../detail-top.vue";
-  import {
-    HTTPUtil as api
-  } from "../../../fetch/api.js";
-  import {
-    mapGetters
-  } from 'vuex';
-  import {
-    client as yh
-  } from '../../../js/client.js'
-  import {bi} from '../../../js/logApi.js'
-  export default {
-    data() {
-      return {
-        detailData: [],
-        isShow: false,
-        itemNo: -1,
-        lastFocus: 0,
-        jsonUrl:'',
-        maskShow:false,
-        likeShow:true,
-      }
-    },
-    created() {
-      if (this.$route.params.jsonUrl) {
-         this.jsonUrl=this.$route.params.jsonUrl
-          let url = this.$route.params.jsonUrl+ this.behindParams;
-          localStorage.setItem('detailJsonUrl', this.jsonUrl);
-          this.getDetailData(url);
-       } else if(this.$route.query.jsonUrl) {
-         c.startTime();
-         bi.start('0201')
-         this.jsonUrl = `${this.$route.query.jsonUrl}&p=${this.$route.query.p}&k=${this.$route.query.k}&v=${this.$route.query.v}&assetId=${this.$route.query.assetId}&c=${this.$route.query.c}`;
-         let url = this.jsonUrl+ this.behindParams;
-          this.getDetailData(url);
-       }else{
-          let url = localStorage.getItem('detailJsonUrl')+this.behindParams;
-          this.getDetailData(url);         
-       }
-    },
-    mounted() {
-    },
-    computed: {
-      ...mapGetters(['behindParams', 'navpos'])
-    },
-    components: {
-      detailtop
-    },
-    methods: {
-      getDetailData(url) {
-        console.log("获取详情页信息");
-        api.jsonp(url, (res) => {
-          if(res.data == null){
-            this.maskShow = true;
-            return;
-          }else{
-            this.maskShow = false;
-          }
-          this.detailData = res.data;
-          if(this.detailData.assetList.length == 0){
-            this.likeShow = false;
-          }else{
-            this.likeShow = true;
-          }
-          // yh.initPlayer(60, 90, 480, 270)
-          // this.playVideo();
-        })
-      },
-
-      keyCode(kc) {
-        if (kc === "down") {
-          return
-        } else if (kc === "up") {
-          this.up();
-        } else if (kc === "left") {
-          this.left();
-        } else if (kc === "right") {
-          this.right();
-        } else if (kc === "KeyEnter") {
-          this.enter();
-        } else if (kc === "KeyBack") {
-          try {
-            // yh.closePlayer()
-          } catch (err) {
-            console.log(err.message);
-          }
-          if(this.$route.params.bp && this.$route.params.bp.type){
-            c.routerBack(this.$router,this.$route.params.bp.type)
-          }else{
-            c.routerBack(this.$router,undefined)
-          }
-        }
-      },
-      playVideo() {
-          yh.showVideo(this.jsonUrl)
-      }, 
-      up() {
-        this.isShow = false
-        this.lastFocus = this.itemNo
-        this.itemNo = -1
-        this.$refs.dl.getKeyListen();
-      },
-      left() {
-        if (this.itemNo === 0) return;
-        if (this.itemNo >= 3) {
-          this.$refs.contentBox.style.marginLeft = 35 - (this.itemNo - 3) * 251 + "px"
-        }
-        this.itemNo--
-      },
-      right() {
-        if (this.itemNo === this.detailData.assetList.length - 1) return
-        this.itemNo++
-        if (this.itemNo >= 4) {
-          this.$refs.contentBox.style.marginLeft = 35 - (this.itemNo - 3) * 251 + "px"
-        }
-      },
-      enter() {
-        // let url = this.detailData.assetList[this.itemNo].jsonUrl+this.behindParams;
-        // this.getDetailData(url)
-        // this.isShow=false;
-        // this.$refs.contentBox.style.marginLeft="35px";
-        // this.itemNo=-1;
-        // this.lastFocus=0;
-        // this.$refs.dl.getKeyListen('enter');
-          localStorage.setItem('BI_recmd_id', 3);
-          let url = this.detailData.assetList[this.itemNo].jsonUrl;
-          this.jsonUrl = url;
-          let layType = this.detailData.assetList[this.itemNo].layout;
-          // yh.closePlayer();
-          if(layType == 'Game_Zy'){
-            // 相同类型资产只刷新数据不跳转
-            url = url +this.behindParams;
-            this.getDetailData(url)
-            this.$refs.contentBox.style.marginLeft="35px";
-            this.isShow=false;
-            this.itemNo=-1;
-            this.lastFocus=0;
-            this.$refs.dl.getKeyListen('enter');
-          }else{
-            c.routerSkip(url,"1",layType,{},this.$router);
-          }
-      },
-      keepDo(isShow, name, position) {
-        if(this.detailData.assetList.length == 0){
-          this.$refs.dl.getKeyListen();
+import c from '../../../js/common.js';
+import detailtop from '../detail-top.vue';
+import {
+  HTTPUtil as api
+} from '../../../fetch/api.js';
+import {
+  mapGetters
+} from 'vuex';
+import {
+  client as yh
+} from '../../../js/client.js'
+import {bi} from '../../../js/logApi.js'
+export default {
+  data () {
+    return {
+      detailData: [],
+      isShow: false,
+      itemNo: -1,
+      lastFocus: 0,
+      jsonUrl: '',
+      maskShow: false,
+      likeShow: true
+    }
+  },
+  created () {
+    if (this.$route.params.jsonUrl) {
+      this.jsonUrl = this.$route.params.jsonUrl
+      let url = this.$route.params.jsonUrl + this.behindParams;
+      localStorage.setItem('detailJsonUrl', this.jsonUrl);
+      this.getDetailData(url);
+    } else if (this.$route.query.jsonUrl) {
+      c.startTime();
+      bi.start('0201')
+      this.jsonUrl = `${this.$route.query.jsonUrl}&p=${this.$route.query.p}&k=${this.$route.query.k}&v=${this.$route.query.v}&assetId=${this.$route.query.assetId}&c=${this.$route.query.c}`;
+      let url = this.jsonUrl + this.behindParams;
+      this.getDetailData(url);
+    } else {
+      let url = localStorage.getItem('detailJsonUrl') + this.behindParams;
+      this.getDetailData(url);
+    }
+  },
+  mounted () {
+  },
+  computed: {
+    ...mapGetters(['behindParams', 'navpos'])
+  },
+  components: {
+    detailtop
+  },
+  methods: {
+    getDetailData (url) {
+      console.log('获取详情页信息');
+      api.jsonp(url, (res) => {
+        if (res.data == null){
+          this.maskShow = true;
           return;
+        } else {
+          this.maskShow = false;
         }
-        if (position === 'down') {
-          this.isShow = true
-          this.itemNo = this.lastFocus
+        this.detailData = res.data;
+        if (this.detailData.assetList.length == 0){
+          this.likeShow = false;
+        } else {
+          this.likeShow = true;
+        }
+        // yh.initPlayer(60, 90, 480, 270)
+        // this.playVideo();
+      })
+    },
+
+    keyCode (kc) {
+      if (kc === 'down') {
+
+      } else if (kc === 'up') {
+        this.up();
+      } else if (kc === 'left') {
+        this.left();
+      } else if (kc === 'right') {
+        this.right();
+      } else if (kc === 'KeyEnter') {
+        this.enter();
+      } else if (kc === 'KeyBack') {
+        try {
+          // yh.closePlayer()
+        } catch (err) {
+          console.log(err.message);
+        }
+        if (this.$route.params.bp && this.$route.params.bp.type){
+          c.routerBack(this.$router, this.$route.params.bp.type)
+        } else {
+          c.routerBack(this.$router, undefined)
         }
       }
     },
+    playVideo () {
+      yh.showVideo(this.jsonUrl)
+    },
+    up () {
+      this.isShow = false
+      this.lastFocus = this.itemNo
+      this.itemNo = -1
+      this.$refs.dl.getKeyListen();
+    },
+    left () {
+      if (this.itemNo === 0) return;
+      if (this.itemNo >= 3) {
+        this.$refs.contentBox.style.marginLeft = 35 - (this.itemNo - 3) * 251 + 'px'
+      }
+      this.itemNo--
+    },
+    right () {
+      if (this.itemNo === this.detailData.assetList.length - 1) return
+      this.itemNo++
+      if (this.itemNo >= 4) {
+        this.$refs.contentBox.style.marginLeft = 35 - (this.itemNo - 3) * 251 + 'px'
+      }
+    },
+    enter () {
+      // let url = this.detailData.assetList[this.itemNo].jsonUrl+this.behindParams;
+      // this.getDetailData(url)
+      // this.isShow=false;
+      // this.$refs.contentBox.style.marginLeft="35px";
+      // this.itemNo=-1;
+      // this.lastFocus=0;
+      // this.$refs.dl.getKeyListen('enter');
+      localStorage.setItem('BI_recmd_id', 3);
+      let url = this.detailData.assetList[this.itemNo].jsonUrl;
+      this.jsonUrl = url;
+      let layType = this.detailData.assetList[this.itemNo].layout;
+      // yh.closePlayer();
+      if (layType == 'Game_Zy'){
+        // 相同类型资产只刷新数据不跳转
+        url = url + this.behindParams;
+        this.getDetailData(url)
+        this.$refs.contentBox.style.marginLeft = '35px';
+        this.isShow = false;
+        this.itemNo = -1;
+        this.lastFocus = 0;
+        this.$refs.dl.getKeyListen('enter');
+      } else {
+        c.routerSkip(url, '1', layType, {}, this.$router);
+      }
+    },
+    keepDo (isShow, name, position) {
+      if (this.detailData.assetList.length == 0){
+        this.$refs.dl.getKeyListen();
+        return;
+      }
+      if (position === 'down') {
+        this.isShow = true
+        this.itemNo = this.lastFocus
+      }
+    }
   }
+}
 </script>

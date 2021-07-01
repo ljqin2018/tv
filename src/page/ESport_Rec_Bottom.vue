@@ -6,7 +6,7 @@
     </div>
     <div class="game_topbox">
       <div id="game_box">
-        <div 
+        <div
           v-for="(item,index) in top"
           :key="item.id"
           :id="('Game'+index)"
@@ -23,7 +23,7 @@
     <div :class="{'hovers':itemNo==(list-1)||list<=6}">
       <img  src="../../static/images/category/222.png" alt=""  class="img2">
     </div>
-    
+
     <keyDo
       v-on:listenKeyCode="keyCode"
       v-if="isShow"
@@ -39,7 +39,7 @@
     height: 100px;
     position: relative;
     margin-left: 18px;
-    
+
   }
   .game_topbox{
     width: 1160px;
@@ -50,7 +50,7 @@
     width: 1000%;
     height: 100px;
   }
-  
+
   .img1{
     width: 80px;
     height: 80px;
@@ -76,7 +76,7 @@
     line-height: 89px;
     position: relative;
   }
-  
+
   .hover{
     width: 178px;
     height: 96px;
@@ -91,11 +91,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import c from "../js/common.js";
+import c from '../js/common.js';
 import {yst} from '../js/yst.js';
-import { client as yh} from '../js/client.js'; //播放器
+import { client as yh } from '../js/client.js'; // 播放器
 export default {
-  props: ['initData','itemSort'],
+  props: ['initData', 'itemSort'],
   name: 'games_scroll',
   data: function () {
     return {
@@ -106,7 +106,7 @@ export default {
       pos: '',
       eleId: '',
       pageId: '',
-      list:0,
+      list: 0,
       top: [
         {
           elementId: '',
@@ -125,19 +125,19 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['behindParams', 'navpos','categorys'])
+    ...mapGetters(['behindParams', 'navpos', 'categorys'])
   },
   created () {
     this.load_start = new Date() - 0;
   },
-  
+
   mounted () {
     this.load_time = new Date() - this.load_start;
     this.top = this.initData.elementList;
     this.list = this.top.length;
     this.eleId = this.initData.specialId;
   },
-  
+
   methods: {
     keyCode (kc) {
       if (kc == 'KeyBack') {
@@ -154,45 +154,45 @@ export default {
         this.enter();
       }
     },
-    enter(){
+    enter (){
       let posId = this.itemSort + '0' + (this.itemNo + 1);
       let columnId = '0' + this.navpos;
       c.setPosition(columnId, posId); // 保存推荐位置
       c.setParentPageType('0101');
       c.setParentPageId(this.categorys[this.navpos].catId);
-       this.$store.commit('GET_ISSHOWPLAY', false);
-        // 关闭小窗口播放
-      this.$emit('isremove',);
-        if (this.top[this.itemNo].jsonUrl) {
-          c.routerSkip(this.top[this.itemNo].jsonUrl,this.top[this.itemNo].elementType,this.top[this.itemNo].layout,{},this.$router);
-        }else{
-          c.routerSkip(this.top[this.itemNo].elementId,this.top[this.itemNo].elementType,"",{},this.$router);
-        }
+      this.$store.commit('GET_ISSHOWPLAY', false);
+      // 关闭小窗口播放
+      this.$emit('isremove');
+      if (this.top[this.itemNo].jsonUrl) {
+        c.routerSkip(this.top[this.itemNo].jsonUrl, this.top[this.itemNo].elementType, this.top[this.itemNo].layout, {}, this.$router);
+      } else {
+        c.routerSkip(this.top[this.itemNo].elementId, this.top[this.itemNo].elementType, '', {}, this.$router);
+      }
     },
     back () {
       this.isActive = false;
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'back');
     },
-    right(){
-      if (this.itemNo>=this.top.length-1) {
+    right (){
+      if (this.itemNo >= this.top.length - 1) {
         return;
       } else {
         this.itemNo++;
       }
       this.addscroll();
     },
-    left(){
-      if(this.itemNo<=0)return;
+    left (){
+      if (this.itemNo <= 0) return;
       this.itemNo--;
       this.addscroll();
     },
-    up(){
+    up (){
       this.isActive = false;
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'up');
     },
-    down(){
+    down (){
       this.isActive = false;
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'down');
@@ -218,15 +218,15 @@ export default {
       ystObj.Load_status = 'success';
       yst.panelClick(ystObj);
     },
-    addscroll(){
+    addscroll (){
       let top = this.cEleOffsetTop('Game' + this.itemNo);
-      var game = document.getElementById("game_box");
-      if (top>1100) {
-        game.style.marginLeft =  - (this.itemNo - 5) * 196 + "px"
+      var game = document.getElementById('game_box');
+      if (top > 1100) {
+        game.style.marginLeft = -(this.itemNo - 5) * 196 + 'px'
         // game.style.setProperty({'transform': 'translateX(-' + 164 * (this.itemNo-5) + 'px)','transition': 'all 0.3s'});
       }
-      if (top<173.9921875) {
-        game.style.marginLeft =  - (this.itemNo) * 196 + "px"
+      if (top < 173.9921875) {
+        game.style.marginLeft = -(this.itemNo) * 196 + 'px'
       }
     },
     cEleOffsetTop (ele) {
@@ -247,8 +247,7 @@ export default {
       this.itemNo = 0;
       this.list = this.top.length;
       this.addscroll();
-      
     }
-  },
+  }
 };
 </script>

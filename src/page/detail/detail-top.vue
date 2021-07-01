@@ -10,7 +10,7 @@
         ref="videoplayer"
         v-bind:psId="psId"
         v-bind:playerCore="playerCore"
-        v-bind:isFullScreen="false" 
+        v-bind:isFullScreen="false"
         v-bind:isFree="isFree"
         v-bind:isBought="isBought"
         v-bind:lastFocusId="lastFocusId"
@@ -64,7 +64,7 @@
     justify-content: center;
     align-items: center;
     margin-right: 20px;
-    margin-left:-6px; 
+    margin-left:-6px;
     margin-top: -4px;
   }
 
@@ -233,7 +233,7 @@
     margin-left: 20px;
     margin-top: 20px;
     background: url("../../assets/detail/img_230x130.png") no-repeat;
-    background-size:100% 100%; 
+    background-size:100% 100%;
     font-size: 20px;
     text-align: left;
     display: flex;
@@ -245,17 +245,14 @@
     overflow: hidden;
   }
 
-
   .detail-content li div {
     width: 166px;
     color: rgba(255,255,255,0.3);
   }
 
-
-
   .detail-content li.active {
     background: url("../../assets/detail/img_230x130_active.png") no-repeat;
-    background-size:100% 100%; 
+    background-size:100% 100%;
   }
 
   .detail-content li div.isplay {
@@ -263,90 +260,89 @@
   }
 </style>
 
-
 <script>
-  import {
-    HTTPUtil as api
-  } from "../../fetch/api.js";
-  import {
-    mapGetters
-  } from 'vuex';
-  import {
-    client as yh
-  } from '../../js/client.js'
-  import detailMoreIntroduction from './detail-more-introduction.vue'
-  import c from '../../js/common.js';
-  import { yst } from '../../js/yst.js';
-  import VideoPlayer from '../play/VideoPlayer'
-  import PlayCore from '../play/playerCode.js'
-  import DetailRecordHelper from '../play/DetailRecordHelper'
+import {
+  HTTPUtil as api
+} from '../../fetch/api.js';
+import {
+  mapGetters
+} from 'vuex';
+import {
+  client as yh
+} from '../../js/client.js'
+import detailMoreIntroduction from './detail-more-introduction.vue'
+import c from '../../js/common.js';
+import { yst } from '../../js/yst.js';
+import VideoPlayer from '../play/VideoPlayer'
+import PlayCore from '../play/playerCode.js'
+import DetailRecordHelper from '../play/DetailRecordHelper'
 
-  export default {
-    props: ['initData', 'jsonUrl'],
-    data() {
-      return {
-        name:"detail_top",
-        detailData: '',
-        isShow: true,
-        isTop: true,
-        position: 0,
-        itemNo: -1,
-        lastFocus: 0,
-        topLastFocus: 0,
-        isplay: 0,
-        noCollect: true,
-        size:{x:60, y:90, width:480,height:270},
-        playerCore: PlayCore.getPlayCore(),
-        currShow: 0, // 0:主页  1：全集 2：简介 3：全屏
-        // view管理
-        lastFocusId: '',
-        classifyDirection: '',
-        isFree: false,
-        isBought: false,
-        psId:""
-      }
-    },
-    beforeCreate() {
+export default {
+  props: ['initData', 'jsonUrl'],
+  data () {
+    return {
+      name: 'detail_top',
+      detailData: '',
+      isShow: true,
+      isTop: true,
+      position: 0,
+      itemNo: -1,
+      lastFocus: 0,
+      topLastFocus: 0,
+      isplay: 0,
+      noCollect: true,
+      size: {x: 60, y: 90, width: 480, height: 270},
+      playerCore: PlayCore.getPlayCore(),
+      currShow: 0, // 0:主页  1：全集 2：简介 3：全屏
+      // view管理
+      lastFocusId: '',
+      classifyDirection: '',
+      isFree: false,
+      isBought: false,
+      psId: ''
+    }
+  },
+  beforeCreate () {
 
-    },
-    created() {
-      // window.isplaynum = this.isplaynum;
-    },
-    mounted() {
-      // yh.setJsNoticEpCallBack("isplaynum");
-    },
-    components: {VideoPlayer,detailMoreIntroduction},
-    computed: {
-      ...mapGetters(['behindParams', 'episode',  'smallScreenState', 'navpos','isShowPlay'])
-    },
-    watch: {
-      initData() {
-        this.detailData = this.initData;
-        try{
-          this.collectData() //初次加载判断是否收藏
-          console.warn('历史返回数据源:'+yh.playHistory(this.detailData.assetId))
-          this.queryHistory();
-          if(yh.playHistory(this.detailData.assetId) == ''){
-            this.isplay = 0;
-            this.itemNo = 0;
-            this.$refs.contentBox.style.marginLeft = '35px';
-          }else{
-            // let json = JSON.parse(yh.playHistory(this.detailData.assetId));
-            
-          }
-          alert(this.episode);
-          this.isplaynum(this.episode);
-          this.itemNo = this.isplay;
-        }catch(error){
-          console.log(error)
+  },
+  created () {
+    // window.isplaynum = this.isplaynum;
+  },
+  mounted () {
+    // yh.setJsNoticEpCallBack("isplaynum");
+  },
+  components: {VideoPlayer, detailMoreIntroduction},
+  computed: {
+    ...mapGetters(['behindParams', 'episode', 'smallScreenState', 'navpos', 'isShowPlay'])
+  },
+  watch: {
+    initData () {
+      this.detailData = this.initData;
+      try {
+        this.collectData() // 初次加载判断是否收藏
+        console.warn('历史返回数据源:' + yh.playHistory(this.detailData.assetId))
+        this.queryHistory();
+        if (yh.playHistory(this.detailData.assetId) == ''){
+          this.isplay = 0;
+          this.itemNo = 0;
+          this.$refs.contentBox.style.marginLeft = '35px';
+        } else {
+          // let json = JSON.parse(yh.playHistory(this.detailData.assetId));
+
         }
-        this.$nextTick(function () {
-          this.logUp();
-        });
+        alert(this.episode);
+        this.isplaynum(this.episode);
+        this.itemNo = this.isplay;
+      } catch (error){
+        console.log(error)
       }
-    },
-    methods: {
-      queryHistory (){
+      this.$nextTick(function () {
+        this.logUp();
+      });
+    }
+  },
+  methods: {
+    queryHistory (){
       let jsonob = '';
       try {
         jsonob = DetailRecordHelper.getRecord(this.detailData.assetId);
@@ -369,236 +365,234 @@
 
       }
     },
-      isplaynum(num){
-        // 播放回调
-        console.log("传过来的字符串"+num);
-        this.isplay = num*1;
-        this.lastFocus = num*1;
-        if(this.isplay>=4){
-         this.$refs.contentBox.style.marginLeft = 35 - (this.isplay - 3) * 251 + "px"  
-        }     
-      },
-      playnumenter(){
-        // 确定播放亮起
-        this.isplay = this.itemNo;
-        if(this.isplay>=4){
-          this.$refs.contentBox.style.marginLeft = 35 - (this.isplay - 3) * 251 + "px"      
-        } 
-      },
-      collectData() {
-        console.log("判断收藏");
-        let url =
-          "http://47.97.96.103/uds/cloud/collection/list?version=1&siteId=" + yh.siteId + "&userId=" + yh.userId +
-          "&relateId=" + this.initData.assetId + "&collectType=1" + this.behindParams
-        api.get(url, (res) => {
-          // console.log(res);
-          if (res.data.resultNum === 1) {
-            this.noCollect = false
+    isplaynum (num){
+      // 播放回调
+      console.log('传过来的字符串' + num);
+      this.isplay = num * 1;
+      this.lastFocus = num * 1;
+      if (this.isplay >= 4){
+        this.$refs.contentBox.style.marginLeft = 35 - (this.isplay - 3) * 251 + 'px'
+      }
+    },
+    playnumenter (){
+      // 确定播放亮起
+      this.isplay = this.itemNo;
+      if (this.isplay >= 4){
+        this.$refs.contentBox.style.marginLeft = 35 - (this.isplay - 3) * 251 + 'px'
+      }
+    },
+    collectData () {
+      console.log('判断收藏');
+      let url =
+          'http://47.97.96.103/uds/cloud/collection/list?version=1&siteId=' + yh.siteId + '&userId=' + yh.userId +
+          '&relateId=' + this.initData.assetId + '&collectType=1' + this.behindParams
+      api.get(url, (res) => {
+        // console.log(res);
+        if (res.data.resultNum === 1) {
+          this.noCollect = false
+        } else {
+          this.noCollect = true
+        }
+      })
+    },
+    addCollect () {
+      let url = 'http://47.97.96.103/uds/cloud/collection/collect?version=1'
+      let data = {
+        siteId: yh.siteId,
+        userId: yh.userId,
+        collectType: 1, // 收藏类型(0-主播,1-资产,2-专题)
+        relateId: this.detailData.assetId,
+        relateTitle: this.detailData.assetName,
+        relateScore: this.detailData.score,
+        relateImg: this.detailData.assetImg,
+        relateUrl: this.jsonUrl,
+        relateLayout: this.detailData.layout
+      }
+      api.post(url, data, (res) => {
+        console.log(res);
+        if (res.mes === 'ok') { console.log('添加收藏成功'); }
+      })
+    },
+    delCollect () {
+      let url = 'http://47.97.96.103/uds/cloud/collection/del?version=1'
+      let data = {
+        siteId: yh.siteId,
+        userId: yh.userId,
+        collectType: 1, // 收藏类型(0-主播,1-资产,2-专题)
+        relateId: this.detailData.assetId,
+        layout: this.detailData.layout
+      }
+      api.post(url, data, (res) => {
+        console.log(res);
+        if (res.mes === 'ok') { console.log('删除收藏成功'); }
+      })
+    },
+    keyCode (kc) {
+      if (!this.detailData){
+        if (kc == 'KeyBack'){
+          if (this.$route.params.bp && this.$route.params.bp.type){
+            c.routerBack(this.$router, this.$route.params.bp.type)
           } else {
-            this.noCollect = true
-          }
-        })
-      },
-      addCollect() {
-        let url = "http://47.97.96.103/uds/cloud/collection/collect?version=1"
-        let data = {
-          siteId: yh.siteId,
-          userId: yh.userId,
-          collectType: 1, //收藏类型(0-主播,1-资产,2-专题)
-          relateId: this.detailData.assetId,
-          relateTitle: this.detailData.assetName,
-          relateScore: this.detailData.score,
-          relateImg: this.detailData.assetImg,
-          relateUrl: this.jsonUrl,
-          relateLayout:this.detailData.layout
-        }
-        api.post(url, data, (res) => {
-          console.log(res);
-          if (res.mes === "ok")
-            console.log("添加收藏成功");
-        })
-      },
-      delCollect() {
-        let url = "http://47.97.96.103/uds/cloud/collection/del?version=1"
-        let data = {
-          siteId: yh.siteId,
-          userId: yh.userId,
-          collectType: 1, //收藏类型(0-主播,1-资产,2-专题)
-          relateId: this.detailData.assetId,
-          layout:this.detailData.layout
-        }
-        api.post(url, data, (res) => {
-          console.log(res);
-          if (res.mes === "ok")
-            console.log("删除收藏成功");
-        })
-      },
-      keyCode(kc) {
-        if(!this.detailData){
-          if(kc == 'KeyBack'){
-            if(this.$route.params.bp && this.$route.params.bp.type){
-              c.routerBack(this.$router,this.$route.params.bp.type)
-            }else{
-              c.routerBack(this.$router,undefined)
-            }
-          }
-        }else{
-          if (kc === "down") {
-            this.down();
-          } else if (kc === "up") {
-            this.up();
-          } else if (kc === "left") {
-            this.left();
-          } else if (kc === "right") {
-            this.right();
-          } else if (kc === "KeyEnter") {
-            this.enter();
-          } else if (kc === "KeyBack") {
-            this.$store.commit('GET_ISSHOWPLAY', false);
-            if(this.$route.params.bp && this.$route.params.bp.type){
-              c.routerBack(this.$router,this.$route.params.bp.type);
-            }else{
-              c.routerBack(this.$router,undefined);
-            }
+            c.routerBack(this.$router, undefined)
           }
         }
-      },
-      left() {
-        if (this.isTop) {
-          if (this.position === 0) return
-          this.position--
-        } else {
-          if (this.itemNo === 0) return
-          if (this.itemNo >= 3) {
-            this.$refs.contentBox.style.marginLeft = 35 - (this.itemNo - 3) * 251 + "px"
-          }
-          this.itemNo--
-        }
-      },
-      right() {
-        if (this.isTop) {
-          if (this.position === 2 || this.position === 3) return
-          this.position++
-        } else {
-          if (this.itemNo === this.detailData.itemList.length - 1) return
-          this.itemNo++
-          if (this.itemNo >= 4) {
-            this.$refs.contentBox.style.marginLeft = 35 - (this.itemNo - 3) * 251 + "px"
+      } else {
+        if (kc === 'down') {
+          this.down();
+        } else if (kc === 'up') {
+          this.up();
+        } else if (kc === 'left') {
+          this.left();
+        } else if (kc === 'right') {
+          this.right();
+        } else if (kc === 'KeyEnter') {
+          this.enter();
+        } else if (kc === 'KeyBack') {
+          this.$store.commit('GET_ISSHOWPLAY', false);
+          if (this.$route.params.bp && this.$route.params.bp.type){
+            c.routerBack(this.$router, this.$route.params.bp.type);
+          } else {
+            c.routerBack(this.$router, undefined);
           }
         }
-      },
-      up() {
-        if (this.isTop) {
-          if(this.position == 2){
-            this.position = 3;
-          }
+      }
+    },
+    left () {
+      if (this.isTop) {
+        if (this.position === 0) return
+        this.position--
+      } else {
+        if (this.itemNo === 0) return
+        if (this.itemNo >= 3) {
+          this.$refs.contentBox.style.marginLeft = 35 - (this.itemNo - 3) * 251 + 'px'
+        }
+        this.itemNo--
+      }
+    },
+    right () {
+      if (this.isTop) {
+        if (this.position === 2 || this.position === 3) return
+        this.position++
+      } else {
+        if (this.itemNo === this.detailData.itemList.length - 1) return
+        this.itemNo++
+        if (this.itemNo >= 4) {
+          this.$refs.contentBox.style.marginLeft = 35 - (this.itemNo - 3) * 251 + 'px'
+        }
+      }
+    },
+    up () {
+      if (this.isTop) {
+        if (this.position == 2){
+          this.position = 3;
+        }
+        return;
+      }
+      this.isTop = true
+      this.position = this.topLastFocus
+      this.lastFocus = this.itemNo
+      this.itemNo = -1
+    },
+    down () {
+      if (this.isTop) {
+        if (this.position == 3){
+          this.position = 2;
           return;
         }
-        this.isTop = true
-        this.position = this.topLastFocus
+        this.isTop = false
+        this.itemNo = this.lastFocus
+        this.topLastFocus = this.position
+        this.position = -1
+      } else {
+        this.isShow = false
         this.lastFocus = this.itemNo
         this.itemNo = -1
-      },
-      down() {
-        if (this.isTop) {
-          if(this.position == 3){
-            this.position = 2;
-            return;
+        this.$emit('pressDown', this.isShow, this.detailData, 'down');
+      }
+    },
+    enter () {
+      if (this.isTop) {
+        if (this.position === 0) {
+          let historyData = {
+            bookMarkTime: new Date().getTime(), // 播放时长
+            watchTime: '', // 观看时长
+            collectType: 1, // 收藏类型(0-主播,1-资产,2-专题)
+            relateId: this.detailData.assetId,
+            relateTitle: this.detailData.assetName,
+            relateScore: this.detailData.score,
+            relateImg: this.detailData.assetImg,
+            layout: this.detailData.layout,
+            jsonUrl: this.jsonUrl
+          };
+          yh.addHistory(historyData);
+          this.currShow = 3;
+          let currentTime = 0;
+          currentTime = this.$refs.videoplayer.getCurrentTime();
+          this.$refs.videoplayer.destoryPlayer();
+          console.log('全屏记录历史时间：' + currentTime);
+          DetailRecordHelper.recordSchedule(this.detailData.assetId, this.episode, currentTime);
+          this.$router.push({'name': 'play', params: {detailData: this.detailData, currShow: this.currShow, playerCore: this.playerCore, psId: this.psId, isFree: this.isFree, isBought: this.isBought, isFullScreen: true}})
+          // yh.fullPlay();
+        } else if (this.position === 1) {
+          if (this.noCollect) {
+            this.addCollect()
+          } else {
+            this.delCollect()
           }
-          this.isTop = false
-          this.itemNo = this.lastFocus
-          this.topLastFocus = this.position
-          this.position = -1
-        } else {
-          this.isShow = false
-          this.lastFocus = this.itemNo
-          this.itemNo = -1
-          this.$emit('pressDown', this.isShow, this.detailData, "down");
-        }
-      },
-      enter() {
-        if (this.isTop) {
-          if (this.position === 0) {
-            let historyData = {
-              bookMarkTime: new Date().getTime(),  //播放时长
-              watchTime: "", //观看时长
-              collectType: 1, //收藏类型(0-主播,1-资产,2-专题)
-              relateId: this.detailData.assetId,
-              relateTitle: this.detailData.assetName,
-              relateScore: this.detailData.score,
-              relateImg: this.detailData.assetImg,
-              layout: this.detailData.layout,
-              jsonUrl: this.jsonUrl
-            };
-            yh.addHistory(historyData);
-            this.currShow = 3;
-            let currentTime = 0;
-            currentTime = this.$refs.videoplayer.getCurrentTime();
-            this.$refs.videoplayer.destoryPlayer();
-            console.log('全屏记录历史时间：' + currentTime);
-            DetailRecordHelper.recordSchedule(this.detailData.assetId,this.episode, currentTime);
-            this.$router.push({'name': 'play', params: {detailData: this.detailData, currShow: this.currShow, playerCore: this.playerCore, psId: this.psId, isFree: this.isFree, isBought: this.isBought, isFullScreen: true}})
-            // yh.fullPlay();
-          } else if (this.position === 1) {
-            if (this.noCollect) {
-              this.addCollect()
-            } else {
-              this.delCollect()
-            }
-            this.noCollect = !this.noCollect
-          } else if(this.position === 3) {
-            // yh.hidePlayer();
-            this.isShow = false;
-            this.$refs.detailM.getKeyListen(true);
-          }else if(this.position === 2){
-            if(this.jsonUrl){
-            window.localStorage.setItem('detailJsonUrl',this.jsonUrl);
-            }
-            c.setParentPageType('0301');
-            c.setParentPageId(this.initData.assetId);
-            this.$router.push({name: 'payfor'})
+          this.noCollect = !this.noCollect
+        } else if (this.position === 3) {
+          // yh.hidePlayer();
+          this.isShow = false;
+          this.$refs.detailM.getKeyListen(true);
+        } else if (this.position === 2){
+          if (this.jsonUrl){
+            window.localStorage.setItem('detailJsonUrl', this.jsonUrl);
           }
-        } else { //下方选集资产
-          this.playnumenter();
-          this.$store.commit('GET_EPISODE', this.itemNo);
+          c.setParentPageType('0301');
+          c.setParentPageId(this.initData.assetId);
+          this.$router.push({name: 'payfor'})
         }
-      },
-      getKeyListen(pos) { //父级来的数据
+      } else { // 下方选集资产
+        this.playnumenter();
+        this.$store.commit('GET_EPISODE', this.itemNo);
+      }
+    },
+    getKeyListen (pos) { // 父级来的数据
+      this.isShow = true
+      if (pos == 'enter'){
+        this.itemNo = 0;
+      } else {
+        this.itemNo = this.lastFocus
+      }
+    },
+    keepDo (name, keyDo) { // 子集来得数据
+      if (name === 'introduction') {
         this.isShow = true
-        if(pos == 'enter'){
-           this.itemNo = 0;
-        }else{
-          this.itemNo = this.lastFocus
-        }
-      },
-      keepDo(name, keyDo) { //子集来得数据
-        if (name === "introduction") {
-          this.isShow = true
-        }
-      },
-      logUp () {
-        try {
-          let programInfo = {};
-          programInfo.Program_name = this.detailData.assetName;
-          programInfo.Program_id = this.detailData.assetId;
-          programInfo.Product_code = '';
-          programInfo.Product_name = '';
-          programInfo.director = '';
-          programInfo.actor = '';
-          programInfo.year = this.detailData.year;
-          programInfo.region = this.detailData.area;
-          programInfo.label = '';
-          programInfo.program_type = this.detailData.assetType;
-          programInfo.program_status = '上线';
-          programInfo.program_online_time = '';
-          programInfo.program_offline_time = '';
+      }
+    },
+    logUp () {
+      try {
+        let programInfo = {};
+        programInfo.Program_name = this.detailData.assetName;
+        programInfo.Program_id = this.detailData.assetId;
+        programInfo.Product_code = '';
+        programInfo.Product_name = '';
+        programInfo.director = '';
+        programInfo.actor = '';
+        programInfo.year = this.detailData.year;
+        programInfo.region = this.detailData.area;
+        programInfo.label = '';
+        programInfo.program_type = this.detailData.assetType;
+        programInfo.program_status = '上线';
+        programInfo.program_online_time = '';
+        programInfo.program_offline_time = '';
 
-          yst.contentInfo(programInfo);
-        } catch (error) {
-          console.log('移动数据处理异常');
-        }
-      },
-      initFocus (force = false) {
+        yst.contentInfo(programInfo);
+      } catch (error) {
+        console.log('移动数据处理异常');
+      }
+    },
+    initFocus (force = false) {
 
     },
     setCurrPlay (index) {
@@ -636,6 +630,6 @@
           break;
       }
     }
-    },
   }
+}
 </script>

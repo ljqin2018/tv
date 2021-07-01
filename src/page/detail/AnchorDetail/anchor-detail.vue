@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="detail-content">
-      
+
       <div class="content-left">
         <ul>
           <div class="left" v-show="tempAssetListLength>0"></div>
@@ -263,165 +263,161 @@
   }
 </style>
 
-
 <script>
-  import {
-    HTTPUtil as api
-  } from "../../../fetch/api.js";
-  import {
-    mapGetters
-  } from 'vuex';
-  import detailMoreIntroduction from '../detail-more-introduction.vue';
-  import {
-    client as yh
-  } from '../../../js/client.js'
-  import c from '../../../js/common.js'
-  export default {
-    data() {
-      return {
-        detailData: [],
-        isShow: true,
-        position: 0,
-        itemNo: 0,
-        lastFocus: -1,
-        tempAssetList:[],
-        tempAssetListLength:0,
-      }
-    },
-    created() {
-      let url = this.$route.params.jsonUrl+ this.behindParams
-      this.getDetailData(url)
-      
-    },
-    activated(){
-      if(this.$route.params.jsonUrl != undefined){
-        let url = this.$route.params.jsonUrl+ this.behindParams
-        this.getDetailData(url);
-        this.itemNo = 0;
-        this.position = 0;
-        this.tempAssetListLength = 0;
-      }
-    },
-    mounted() {},
-    computed: {
-      ...mapGetters(['behindParams', 'navpos'])
-    },
-    components: {
-      detailMoreIntroduction
-    },
-    methods: {
-      getDetailData(url) {
-        console.log("获取详情页信息");
-        api.jsonp(url, (res) => {
-          console.log(res);
-          this.detailData = res.data
-          if(this.detailData.assetList){
-            this.tempAssetList = this.split_array(this.detailData.assetList,6)
-          }else{
-            this.tempAssetList = [];
-            this.position = -1;
-            this.itemNo = -1
-          }
-        })
-      },
-
-      keyCode(kc) {
-        if (kc === "down") {
-          this.down();
-        } else if (kc === "up") {
-          this.up();
-        } else if (kc === "left") {
-          if (this.position === -1) return
-          this.left();
-        } else if (kc === "right") {
-          if (this.position === -1) return
-          this.right();
-        } else if (kc === "KeyEnter") {
-          this.enter();
-        } else if (kc === "KeyBack") {
-          if(this.$route.params.bp && this.$route.params.bp.type){
-            c.routerBack(this.$router,this.$route.params.bp.type)
-          }else{
-            c.routerBack(this.$router,undefined)
-          }
-        }     
-      },
-      up() {
-        if (this.position === -1) return;
-        // 资产部分
-        if (this.itemNo % 3 === 0) {
+import {
+  HTTPUtil as api
+} from '../../../fetch/api.js';
+import {
+  mapGetters
+} from 'vuex';
+import detailMoreIntroduction from '../detail-more-introduction.vue';
+import {
+  client as yh
+} from '../../../js/client.js'
+import c from '../../../js/common.js'
+export default {
+  data () {
+    return {
+      detailData: [],
+      isShow: true,
+      position: 0,
+      itemNo: 0,
+      lastFocus: -1,
+      tempAssetList: [],
+      tempAssetListLength: 0
+    }
+  },
+  created () {
+    let url = this.$route.params.jsonUrl + this.behindParams
+    this.getDetailData(url)
+  },
+  activated (){
+    if (this.$route.params.jsonUrl != undefined){
+      let url = this.$route.params.jsonUrl + this.behindParams
+      this.getDetailData(url);
+      this.itemNo = 0;
+      this.position = 0;
+      this.tempAssetListLength = 0;
+    }
+  },
+  mounted () {},
+  computed: {
+    ...mapGetters(['behindParams', 'navpos'])
+  },
+  components: {
+    detailMoreIntroduction
+  },
+  methods: {
+    getDetailData (url) {
+      console.log('获取详情页信息');
+      api.jsonp(url, (res) => {
+        console.log(res);
+        this.detailData = res.data
+        if (this.detailData.assetList){
+          this.tempAssetList = this.split_array(this.detailData.assetList, 6)
+        } else {
+          this.tempAssetList = [];
           this.position = -1;
-          this.lastFocus = this.itemNo
           this.itemNo = -1
+        }
+      })
+    },
+
+    keyCode (kc) {
+      if (kc === 'down') {
+        this.down();
+      } else if (kc === 'up') {
+        this.up();
+      } else if (kc === 'left') {
+        if (this.position === -1) return
+        this.left();
+      } else if (kc === 'right') {
+        if (this.position === -1) return
+        this.right();
+      } else if (kc === 'KeyEnter') {
+        this.enter();
+      } else if (kc === 'KeyBack') {
+        if (this.$route.params.bp && this.$route.params.bp.type){
+          c.routerBack(this.$router, this.$route.params.bp.type)
         } else {
-          this.itemNo--
+          c.routerBack(this.$router, undefined)
         }
-      },
+      }
+    },
+    up () {
+      if (this.position === -1) return;
+      // 资产部分
+      if (this.itemNo % 3 === 0) {
+        this.position = -1;
+        this.lastFocus = this.itemNo
+        this.itemNo = -1
+      } else {
+        this.itemNo--
+      }
+    },
 
-      down() {
-        if (this.position === -1) {
-          if(this.tempAssetList.length == 0)return;
-          this.position = 0
-          this.itemNo = this.lastFocus
-        } else {
-          if (this.itemNo>=this.tempAssetList[this.tempAssetListLength].length-1) return;
-          this.itemNo++
-        }
-      },
-      
-      split_array(arr, len){
-      var a_len = arr.length;
-      var result = [];    
-      for(var i=0;i<a_len;i+=len)
-      {        
-        result.push(arr.slice(i,i+len));    
-      }    
-        return result;
-      },
-      left() {
-        if(this.itemNo<3){
-          if(this.tempAssetListLength<=0)return;
-          this.itemNo+=3; 
-          this.tempAssetListLength--;       
-        }else{
-          this.itemNo-=3;
-        }
-      },
+    down () {
+      if (this.position === -1) {
+        if (this.tempAssetList.length == 0) return;
+        this.position = 0
+        this.itemNo = this.lastFocus
+      } else {
+        if (this.itemNo >= this.tempAssetList[this.tempAssetListLength].length - 1) return;
+        this.itemNo++
+      }
+    },
 
-      right() {
-        if(this.itemNo>=3){
-          if(this.tempAssetListLength>=this.tempAssetList.length-1)return;
-          this.tempAssetListLength++
-          this.itemNo-=3
-        }else{
-          this.itemNo+=3;
-        }
-        if(this.itemNo>=this.tempAssetList[this.tempAssetListLength].length-1){
-          this.itemNo = this.tempAssetList[this.tempAssetListLength].length-1;
-        }
-      },
+    split_array (arr, len){
+      var aLen = arr.length;
+      var result = [];
+      for (var i = 0; i < aLen; i += len) {
+        result.push(arr.slice(i, i + len));
+      }
+      return result;
+    },
+    left () {
+      if (this.itemNo < 3){
+        if (this.tempAssetListLength <= 0) return;
+        this.itemNo += 3;
+        this.tempAssetListLength--;
+      } else {
+        this.itemNo -= 3;
+      }
+    },
 
-      enter() {
-          if(this.position===-1) {
-            this.isShow = false;
-            this.$refs.detailM.getKeyListen(false);
-          } else {
-            let url = this.tempAssetList[this.tempAssetListLength][this.itemNo].jsonUrl;
-            let layType = this.tempAssetList[this.tempAssetListLength][this.itemNo].layout;
-            // this.$router.push({
-            //   name: 'AnchorShotVideo',
-            //   params: { jsonUrl: url, catCode: 1, data: this.detailData.assetList[this.itemNo]}
-            // });
-            c.routerSkip(url,'1',layType,'',this.$router)
-          }
-      },
+    right () {
+      if (this.itemNo >= 3){
+        if (this.tempAssetListLength >= this.tempAssetList.length - 1) return;
+        this.tempAssetListLength++
+        this.itemNo -= 3
+      } else {
+        this.itemNo += 3;
+      }
+      if (this.itemNo >= this.tempAssetList[this.tempAssetListLength].length - 1){
+        this.itemNo = this.tempAssetList[this.tempAssetListLength].length - 1;
+      }
+    },
 
-      keepDo(name, keyDo) { //子集来得数据
-        if (name === "introduction") {
-          this.isShow = true;
+    enter () {
+      if (this.position === -1) {
+        this.isShow = false;
+        this.$refs.detailM.getKeyListen(false);
+      } else {
+        let url = this.tempAssetList[this.tempAssetListLength][this.itemNo].jsonUrl;
+        let layType = this.tempAssetList[this.tempAssetListLength][this.itemNo].layout;
+        // this.$router.push({
+        //   name: 'AnchorShotVideo',
+        //   params: { jsonUrl: url, catCode: 1, data: this.detailData.assetList[this.itemNo]}
+        // });
+        c.routerSkip(url, '1', layType, '', this.$router)
+      }
+    },
 
-        }
+    keepDo (name, keyDo) { // 子集来得数据
+      if (name === 'introduction') {
+        this.isShow = true;
       }
     }
   }
+}
 </script>

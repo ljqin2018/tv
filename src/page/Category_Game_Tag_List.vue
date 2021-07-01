@@ -44,7 +44,7 @@
 import {client as yh} from '../js/client.js'
 import {bp as bi} from '../js/ga.js'
 import $ from 'jquery'
-import c from "../js/common.js";
+import c from '../js/common.js';
 export default {
   props: ['initData', 'catCode', 'catId'],
   name: 'SinglePorgama',

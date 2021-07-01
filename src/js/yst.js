@@ -125,7 +125,7 @@ yst.panelClick = function (obj) {
   ystObj.Load_time = obj.Load_time
   ystObj.Load_status = obj.Load_status
   console.log('页面点击log', ystObj)
-  groupArg("22", ystObj);
+  groupArg('22', ystObj);
 }
 
 yst.exposure = function (obj) {

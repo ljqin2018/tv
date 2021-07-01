@@ -80,7 +80,7 @@ import {bi} from '../../js/logApi.js'
 import c from '../../js/common.js'
 export default {
   components: {LoadingAnim, MarqueenText},
-  props: ['detailData', 'psId', 'currShow', 'playerCore', 'isFree', 'isBought', 'isFullScreen','size',],
+  props: ['detailData', 'psId', 'currShow', 'playerCore', 'isFree', 'isBought', 'isFullScreen', 'size'],
   data (){
     return {
       isPlayStarted: false,
@@ -159,7 +159,7 @@ export default {
   },
   watch: {
     episode: {
-      handler:  function(v, oldV) {
+      handler: function (v, oldV) {
         console.log('历史记录的集数与传入的集数不一致,使用传入的集数：' + v)
         console.log('episode changed v = ' + v + 'oldv = ' + oldV);
         this.cachePlayTime = -1;
@@ -167,10 +167,10 @@ export default {
       },
       deep: false
     },
-    detailData(){
+    detailData (){
       console.log('video player next');
       setTimeout(() => {
-        if (this.isFullScreen){// 全屏状态
+        if (this.isFullScreen){ // 全屏状态
           this.isShow = true;
           this.playerCore.setDisplayArea(0, 0, 1280, 720);
         } else { // 小窗口状态
@@ -191,7 +191,7 @@ export default {
       },
       deep: false
     },
-    isShowPlay(){
+    isShowPlay (){
       if (this.isShowPlay == false) {
         this.destoryPlayer();
         this.heartlogUp('end');
@@ -201,21 +201,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['behindParams', 'episode', 'userTimeStatus', 'smallScreenState','isShowPlay'])
+    ...mapGetters(['behindParams', 'episode', 'userTimeStatus', 'smallScreenState', 'isShowPlay'])
   },
   methods: {
     keyCode (kc){
       console.log('播放器已获取键值控制权');
       this.controllShowModeTask();
       if (kc == 'down') {
-        
         if (this.showContent === 1){
           // 焦点在综艺选集条
           if (this.isVarietyBar){
             if (this.varietyEpisode >= (this.detailData.itemList.length - 1)) return;
             this.scrollVariety -= 60;
             ++this.varietyEpisode;
-            return;
           }
           // // 电视剧选集条
           // if (this.singleBar === false){
@@ -277,8 +275,8 @@ export default {
       } else if (kc == 'KeyEnter') {
         if (this.showContent === 1){
           // if (this.singleBar === false){
-            // 综艺选集条和电视剧选集条不影响
-            this.$store.commit('GET_EPISODE', this.varietyEpisode);
+          // 综艺选集条和电视剧选集条不影响
+          this.$store.commit('GET_EPISODE', this.varietyEpisode);
           // }
         } else if (this.showContent == 2){
           if (this.playState == 2) {
@@ -301,7 +299,7 @@ export default {
         }
       } else if (kc == 'KeyBack') {
         console.log('handleBackEvent showContent = ' + this.showContent);
-        DetailRecordHelper.recordSchedule(this.detailData.assetId,this.episode, this.currPlayTime);
+        DetailRecordHelper.recordSchedule(this.detailData.assetId, this.episode, this.currPlayTime);
         // 监听返回键
         if (this.showTimer != -1) {
         // console.log("restartShowTimer before clear");
@@ -331,7 +329,6 @@ export default {
             if (this.varietyEpisode === 0) return;
             this.scrollVariety += 60;
             --this.varietyEpisode;
-            return;
           }
           // // 焦点在选集条
           // if (this.singleBar === false){
@@ -399,7 +396,7 @@ export default {
       //       this.scrollScopePos = seriesScope;
       //     }
       //   }
-      // } else 
+      // } else
       if (this.detailData.layout === 'Game_Zy' || 'Detail_News'){
         // 综艺类型
         this.isVarietyBar = true;
@@ -504,7 +501,7 @@ export default {
       this.playerReadyOption.onStateChange = function (){
         console.log('video_player onStateChange + state = ' + self.playerCore.getState());
         self.playState = self.playerCore.getState();
-        
+
         if (self.playState == 0) {
           // ...
         }
@@ -565,8 +562,8 @@ export default {
     },
     initView (json) {
       // 初始化窗口大小
-      console.warn(json.x,json.y,json.width,json.height);
-      this.playerCore.setDisplayArea(json.x,json.y,json.width,json.height);
+      console.warn(json.x, json.y, json.width, json.height);
+      this.playerCore.setDisplayArea(json.x, json.y, json.width, json.height);
       console.warn(this.detailData);
     },
     initProgress () {
@@ -704,11 +701,11 @@ export default {
       }
       // 初始化播放器参数
       console.log('详情页传的集数：' + this.episode + '-----历史记录里面的集数:' + playIndex);
-      if (playIndex == this.episode){ 
+      if (playIndex == this.episode){
         this.playIndex(this.episode);
-        } else { 
-          this.$emit('setCurrPlay', playIndex); 
-        }
+      } else {
+        this.$emit('setCurrPlay', playIndex);
+      }
       this.$emit('onPlayStart', playIndex);
     },
     getCurrentTime (){
@@ -889,10 +886,10 @@ export default {
       this.needFullScreenTime = -1;
       this.needMinScreenTime = -1;
     },
-    removePlay(){
+    removePlay (){
       this.playerCore.removePlay();
     },
-    nextPlay(){
+    nextPlay (){
       setTimeout(() => {
         this.initView(this.size);
         this.startPlay();
@@ -929,7 +926,7 @@ export default {
     let logs = {
       asset_id: this.detailData.assetId,
       item_id: this.detailData.itemList[this.episode].itemId,
-      qb_datetime:this.startTime,
+      qb_datetime: this.startTime,
       zb_datetime: new Date().getTime(),
       qb_assettime: this.historyTime,
       zb_assettime: this.currPlayTime,
@@ -946,7 +943,7 @@ export default {
       recmd_id: c.getRecmd_id(),
       isFullScreen: this.currShow == 3 ? 0 : 1
     }
-    console.log('埋点日志信息'+logs);
+    console.log('埋点日志信息' + logs);
     bi.vod(logs);
     this.destoryPlayer();
     this.heartlogUp('end');

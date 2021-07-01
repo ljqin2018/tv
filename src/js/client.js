@@ -146,7 +146,7 @@ yh.prototype.JsCallConfig = function (callBack) {
 }
 
 // 播放直播视频
-yh.prototype.showPlay = function (url , id) {
+yh.prototype.showPlay = function (url, id) {
   try {
     console.log('当前播放器地址' + url);
     let jsonob = {
@@ -475,35 +475,33 @@ yh.prototype.getUserAccount = function () {
   }
 }
 
-
-
-yh.prototype.addHistory= function(historyData) {   // 本地添加历史观看 (已倒序查重) ---wzh
+yh.prototype.addHistory = function (historyData) { // 本地添加历史观看 (已倒序查重) ---wzh
   let historyList = localStorage.getItem('historyList');
   if (historyList) {
     historyList = JSON.parse(historyList)
-    historyList = historyList.filter(arr =>arr.relateId!==historyData.relateId)
+    historyList = historyList.filter(arr => arr.relateId !== historyData.relateId)
     historyList.unshift(historyData);
   } else {
     historyList = []
     historyList.unshift(historyData);
   }
-  console.log("播放记录列表");
+  console.log('播放记录列表');
   console.log(historyList);
   localStorage.setItem('historyList', JSON.stringify(historyList));
 }
-yh.prototype.delHistory =function(index) {  //本地添加历史观看---wzh
-    let historyList = JSON.parse(localStorage.getItem('historyList'));
-    if(historyList.length>0) {
-      historyList.splice(index,1)
-      console.log("播放记录列表");
-      console.log(historyList);
-      localStorage.setItem('historyList', JSON.stringify(historyList));
-    } else {
-      console.log("已无播放记录");
-    }
-},
-yh.prototype.delAllHistory =function() { //删除所有---wzh
-  localStorage.removeItem("historyList")
+yh.prototype.delHistory = function (index) { // 本地添加历史观看---wzh
+  let historyList = JSON.parse(localStorage.getItem('historyList'));
+  if (historyList.length > 0) {
+    historyList.splice(index, 1)
+    console.log('播放记录列表');
+    console.log(historyList);
+    localStorage.setItem('historyList', JSON.stringify(historyList));
+  } else {
+    console.log('已无播放记录');
+  }
+}
+yh.prototype.delAllHistory = function () { // 删除所有---wzh
+  localStorage.removeItem('historyList')
 }
 // eslint-disable-next-line new-cap
 let client = new yh()

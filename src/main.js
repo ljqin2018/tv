@@ -37,7 +37,7 @@ router.beforeEach((to, from, next) => {
     sessionStorage.removeItem(toRoute);
   } else {
     sessionStorage.setItem(fromeRoute || '/', JSON.stringify({
-      history:true,
+      history: true
     }))
   }
   next();

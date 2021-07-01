@@ -9,12 +9,12 @@
             <p class="text">{{eleList.specialDesc}}</p>
             </div>
         </div>
-        <div class="btn-sc" 
+        <div class="btn-sc"
         v-if="isSC"
         :class="{'hovers':isHover==true}"
           >
         </div>
-        <div class="btn-scc" 
+        <div class="btn-scc"
         v-if="!isSC"
         :class="{'active':isHover==true}"
           >
@@ -23,7 +23,7 @@
         <div class="left-icon" :class="{'accnone':posnum==0}"></div>
         <div class="left-icon1" :class="{'accnone':posnum==list||list <= 0}"></div>
       <div class="right-center">
-        <div 
+        <div
           v-for="(item,index) in top[posnum]"
           :key="item.id"
           :id="('speaial'+index)"
@@ -116,7 +116,7 @@
   height: 383px;
   margin-top:31px;
   margin-left:30px;
-  line-height: 24px;  
+  line-height: 24px;
   overflow: hidden;
 }
 
@@ -128,7 +128,7 @@
   left: 66px;
   top: -33px;
   background: url(../../static/images/special/1877.png) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
 }
 
 .header .btn-scc {
@@ -139,14 +139,14 @@
   left: 66px;
   top: -33px;
   background: url(../../static/images/special/1895.png) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
 }
 
 .tit {
   width: 256px;
   height: 155px;
   background: url(../../static/images/special/1891.png) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
   font-weight: 600;
   z-index: 99;
   color: #ffffff;
@@ -162,7 +162,7 @@
   font-family: PingFangSC-Regular;
   position: absolute;
   top: 36px;
-  left: 20px; 
+  left: 20px;
 }
 ul,
 li {
@@ -173,7 +173,7 @@ li {
   width: 1280px;
   height: 720px;
   background: url(../../static/images/special/1832.png) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
   position: relative;
   overflow: hidden;
 }
@@ -211,7 +211,7 @@ li {
   height: 130px;
   background: url(../../static/images/special/915.png) no-repeat;
   background-size:100% 100%;
-  z-index: 99; 
+  z-index: 99;
   left: 0px;
   top: 0px;
 }
@@ -245,8 +245,8 @@ export default {
   data () {
     return {
       isShow: true,
-      isSC:true,
-      isHover:false,
+      isSC: true,
+      isHover: false,
       posnum: 0,
       itemNo: 0,
       placeholder: require('../../static/images/special/665.png'),
@@ -258,32 +258,32 @@ export default {
       traceType: '',
       traceTypes: '',
       timer: '',
-      list:'',
+      list: '',
       eleList: '',
-      top:'',
-      listTop:0,
+      top: '',
+      listTop: 0,
       load_start: 0,
       load_time: 0,
       exposureStartTime: 0,
       exposureEndTime: 0,
-      pos:false
+      pos: false
     };
   },
   components: {},
   mounted () {
-    
+
   },
   created () {
     this.init();
-    this.$nextTick(()=>{
+    this.$nextTick(() => {
       if (this.pos) {
-        this.isHover=true;
-      }else{
-        this.isHover =false;
+        this.isHover = true;
+      } else {
+        this.isHover = false;
       }
-    this.collectData();
+      this.collectData();
     })
-    if (this.bp =="收藏跳入") {
+    if (this.bp == '收藏跳入') {
       localStorage.setItem('bp', this.bp);
     }
   },
@@ -301,87 +301,84 @@ export default {
   //     });
   //   }
   // },
-  activated(){
+  activated (){
     if (!this.$route.meta.keep) {
       this.init();
-      if (this.bp =="收藏跳入") {
-      localStorage.setItem('bp', this.bp);
+      if (this.bp == '收藏跳入') {
+        localStorage.setItem('bp', this.bp);
       }
       this.itemNo = 0;
       this.posnum = 0;
-      this.isShow= true;
-      this.isHover=false;
-      this.isSC=true;
-      setTimeout(()=>{
-      this.collectData();
+      this.isShow = true;
+      this.isHover = false;
+      this.isSC = true;
+      setTimeout(() => {
+        this.collectData();
         if (this.pos) {
-          this.isHover=true;
-        }else{
-          this.isHover =false;
+          this.isHover = true;
+        } else {
+          this.isHover = false;
         }
-      },200)
+      }, 200)
     }
   },
   updated () {
     this.$nextTick(function () {
       this.$lazyImages.loadImage();
-      
     });
   },
   methods: {
-     collectData() {
-        let url =
-          "http://47.97.96.103/uds/cloud/collection/list?version=1&siteId=" + yh.siteId + "&userId=" + yh.userId +
-          "&relateId=" + this.eleList.specialId + "&collectType=2"
-          console.log(url);
-        api.get(url, (res) => {
-          if(res.data.resultNum==1) {
-            this.isSC=false;
-          } else {
-            this.isSC=true;
-          }
-        })
-      },
+    collectData () {
+      let url =
+          'http://47.97.96.103/uds/cloud/collection/list?version=1&siteId=' + yh.siteId + '&userId=' + yh.userId +
+          '&relateId=' + this.eleList.specialId + '&collectType=2'
+      console.log(url);
+      api.get(url, (res) => {
+        if (res.data.resultNum == 1) {
+          this.isSC = false;
+        } else {
+          this.isSC = true;
+        }
+      })
+    },
 
-      addCollect() {
-        let url = "http://47.97.96.103/uds/cloud/collection/collect?version=1"
-        let data = {
-          siteId: yh.siteId,
-          userId: yh.userId,
-          collectType: 2, //收藏类型(0-主播,1-资产,2-专题)
-          relateId: this.eleList.specialId,
-          relateTitle: this.eleList.specialName,
-          relateImg: this.eleList.coverimage,
-          relateUrl: this.jsonUrl,
-          relateLayout:"Subject_Detail_TP1"
-        }
-        api.post(url, data, (res) => {
-          console.log(res);
-          if (res.mes === "ok")
-            console.log("添加收藏成功");
-        })
-      },
-      delCollect() {
-        let url = "http://47.97.96.103/uds/cloud/collection/del?version=1"
-        let data = {
-          siteId: yh.siteId,
-          userId: yh.userId,
-          collectType: 2, //收藏类型(0-主播,1-资产,2-专题)
-          relateId: this.eleList.specialId,
-        }
-        api.post(url, data, (res) => {
-          console.log(res);
-          if (res.mes === "ok")
-            console.log("删除收藏成功");
-        })
-      },
-    split_array(arr, len){
-      var a_len = arr.length;
-      var result = [];    
-      for(var i=0;i<a_len;i+=len){        
-        result.push(arr.slice(i,i+len));    
-      }    
-        return result;
+    addCollect () {
+      let url = 'http://47.97.96.103/uds/cloud/collection/collect?version=1'
+      let data = {
+        siteId: yh.siteId,
+        userId: yh.userId,
+        collectType: 2, // 收藏类型(0-主播,1-资产,2-专题)
+        relateId: this.eleList.specialId,
+        relateTitle: this.eleList.specialName,
+        relateImg: this.eleList.coverimage,
+        relateUrl: this.jsonUrl,
+        relateLayout: 'Subject_Detail_TP1'
+      }
+      api.post(url, data, (res) => {
+        console.log(res);
+        if (res.mes === 'ok') { console.log('添加收藏成功'); }
+      })
+    },
+    delCollect () {
+      let url = 'http://47.97.96.103/uds/cloud/collection/del?version=1'
+      let data = {
+        siteId: yh.siteId,
+        userId: yh.userId,
+        collectType: 2, // 收藏类型(0-主播,1-资产,2-专题)
+        relateId: this.eleList.specialId
+      }
+      api.post(url, data, (res) => {
+        console.log(res);
+        if (res.mes === 'ok') { console.log('删除收藏成功'); }
+      })
+    },
+    split_array (arr, len){
+      var aLen = arr.length;
+      var result = [];
+      for (var i = 0; i < aLen; i += len){
+        result.push(arr.slice(i, i + len));
+      }
+      return result;
     },
     getDetail (curl) {
       let that = this;
@@ -396,9 +393,9 @@ export default {
         } else {
           that.pos = false;
         }
-        that.top = that.split_array(that.eleList.elementList,6);
-          that.listTop = that.eleList.elementList.length;
-          that.list = that.top.length-1;
+        that.top = that.split_array(that.eleList.elementList, 6);
+        that.listTop = that.eleList.elementList.length;
+        that.list = that.top.length - 1;
       });
     },
     init () {
@@ -450,16 +447,16 @@ export default {
         yh.back();
       } else {
         let bst = localStorage.getItem('bp');
-        if (bst == "收藏跳入") {
+        if (bst == '收藏跳入') {
           localStorage.removeItem('bp');
           // this.$router.go(-1);
-          this.$router.push({ path:'/History'});
-        }else{
-          this.$router.push({ path:'/jx/index'});
+          this.$router.push({ path: '/History' });
+        } else {
+          this.$router.push({ path: '/jx/index' });
         }
       }
     },
-    KeyEnter(){
+    KeyEnter (){
       if (this.isHover) {
         if (this.isSC) {
           this.isSC = false;
@@ -472,68 +469,67 @@ export default {
         c.setParentPageType('0801');
         c.setParentPageId(this.eleList.specialId);
         let url = this.top[this.posnum][this.itemNo];
-        c.routerSkip(url.jsonUrl, "1", url.layout,{type:'hotTopics'}, this.$router);
+        c.routerSkip(url.jsonUrl, '1', url.layout, {type: 'hotTopics'}, this.$router);
       }
     },
     left () {
       if (this.isHover) {
-          return;
-        }else{
-          if(this.itemNo==0||this.itemNo==2||this.itemNo==4){
-          if (this.posnum==0) {
+
+      } else {
+        if (this.itemNo == 0 || this.itemNo == 2 || this.itemNo == 4){
+          if (this.posnum == 0) {
             this.isHover = true;
-            this.itemNo=-1;
+            this.itemNo = -1;
           } else {
             this.itemNo++;
             this.posnum--;
           }
-        }else{
+        } else {
           this.itemNo--;
         }
       }
-      
     },
     right () {
-      if (this.pos)return;
+      if (this.pos) return;
       if (this.isHover) {
-        this.isHover =false;
+        this.isHover = false;
       }
-      if(this.itemNo==3||this.itemNo==1||this.itemNo==5){
-        if (this.posnum>=this.top.length-1){
-            return;
-        }else{
+      if (this.itemNo == 3 || this.itemNo == 1 || this.itemNo == 5){
+        if (this.posnum >= this.top.length - 1){
+
+        } else {
           this.itemNo--;
           this.posnum++;
-          if (this.top[this.posnum].length-1<this.itemNo) {
-            this.itemNo=0;
-          } 
+          if (this.top[this.posnum].length - 1 < this.itemNo) {
+            this.itemNo = 0;
+          }
         }
-      }else{
+      } else {
         this.itemNo++;
-        if (this.itemNo>=this.top[this.posnum].length-1) {
-        this.itemNo=this.top[this.posnum].length-1;
+        if (this.itemNo >= this.top[this.posnum].length - 1) {
+          this.itemNo = this.top[this.posnum].length - 1;
         }
       }
     },
     down () {
       if (this.isHover) {
-          return;
-        }else{
-      if(this.itemNo==4||this.itemNo==5 )return;
-      this.itemNo+=2;
-      if (this.itemNo>=this.top[this.posnum].length-1) {
-        this.itemNo=this.top[this.posnum].length-1;
-      }
+
+      } else {
+        if (this.itemNo == 4 || this.itemNo == 5) return;
+        this.itemNo += 2;
+        if (this.itemNo >= this.top[this.posnum].length - 1) {
+          this.itemNo = this.top[this.posnum].length - 1;
+        }
       }
     },
     up () {
       if (this.isHover) {
-          return;
-        }else{
-      if(this.itemNo==0||this.itemNo==1)return;
-      this.itemNo-=2;
+
+      } else {
+        if (this.itemNo == 0 || this.itemNo == 1) return;
+        this.itemNo -= 2;
       }
-    },
+    }
   },
   computed: {
     ...mapGetters([
@@ -548,14 +544,14 @@ export default {
       'navpos'
     ])
   },
-  beforeRouteLeave(to ,from , next){
-      if (to.name=="index" ||to.name =='History') {
-        from.meta.keep = false;
-      }else{
-        from.meta.keep = true;
-      }
-      next();
-    },
+  beforeRouteLeave (to, from, next){
+    if (to.name == 'index' || to.name == 'History') {
+      from.meta.keep = false;
+    } else {
+      from.meta.keep = true;
+    }
+    next();
+  }
   // beforeRouteLeave (to, from, next) {
   //   try {
   //     let pageId = this.eleList[0].specialId;

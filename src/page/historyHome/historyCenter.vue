@@ -8,9 +8,9 @@
         <div class="btn_center">
             <ul class="his_ul">
                 <li v-for="(item,index) in top[time]" :key="item.id" :id="('Img'+index)" class="imgs">
-                    <lazy-image 
+                    <lazy-image
                     :src='item.relateImg'
-                    :placeholder='placeholder' 
+                    :placeholder='placeholder'
                     :initScore='initScore' />
                     <div :class="{'hover':index==itemNo&&isShow&&!isTop}"></div>
                 </li>
@@ -112,7 +112,7 @@
         height: 100%;
         background: url(../../../static/images/special/915.png) no-repeat;
         background-size:100% 100%;
-        z-index: 99; 
+        z-index: 99;
         left: 0px;
         top: 0px;
     }
@@ -205,230 +205,225 @@
 </style>
 
 <script>
-    import {
-        HTTPUtil as api
-    } from '../../fetch/api.js'
+import {
+  HTTPUtil as api
+} from '../../fetch/api.js'
 
-    // import {
-    //     bp as bi
-    // } from '../js/ga.js'
-    import { client as yh } from '../../js/client.js';
-    import c from '../../js/common.js'
-    export default {
-        props: ['jsonUrl'],
-        data() {
-            return {
-                num: 1,
-                itemNo: 0,
-                op: 0,
-                isHis: false,
-                isTop:false,
-                placeholder: require('../../assets/img_loading_160x230.png'),
-                initScore: require('../../assets/corner_mark.png'),
-                isShow: false,
-                numop: false,
-                timer: null,
-                time: 0,
-                CLEARTIMES:null,
-                userToken:'',
-                top:'',
-                list:'',
-                isList:true,
-                text_list:'暂无资产'
-            }
-        },
-        activated(){
-            if (!this.$route.meta.keep) {
-                this.isShow = false;
-                this.isTop = false;
-                this.time =  0;
-                this.itemNo = 0;
-            }
-        },
-        created() {
-        },
-        mounted() {
-
-        },
-        updated() {},
-
-        methods: {
-            keyCode(kc) {
-                if (kc == "KeyBack") {
-                    this.$router.push({ path:'/jx/index'});
-                } else if (kc == "right") {
-                    this.right();
-                } else if (kc == "left") {
-                    this.left();
-                } else if (kc == "down") {
-                    this.down();
-                } else if (kc == "up") {
-                    this.up();
-                } else if (kc == "KeyEnter") {
-                    this.KeyEnter();
-                }
-            },
-            down() {
-                if (this.isTop) {
-                    this.isTop = false;
-                } else {
-                    if (this.itemNo==6||this.itemNo==7||this.itemNo==8) {
-                        return;
-                    } else {
-                        this.itemNo+=3;
-                        if (this.itemNo>this.top[this.time].length-1) {
-                            this.itemNo = this.top[this.time].length-1;
-                        }
-                    }
-                }
-            },
-            up() {
-                if (this.isTop) return;
-               if (this.itemNo==0||this.itemNo==1||this.itemNo==2) {
-                   this.isTop = true;
-               } else {
-                 this.itemNo-=3;
-               }
-            },
-            right() {
-                if (this.isTop) return;
-               if (this.itemNo==2||this.itemNo==5||this.itemNo==8) {
-                   
-                   if (this.itemNo>this.top[this.time].length-1) {
-                    this.itemNo = this.top[this.time].length-1;
-                    }else{
-                        if (this.time>=this.top.length-1) {
-                            return
-                        } else {
-                            this.time++;
-                            this.itemNo-=2;
-                            if (this.itemNo>this.top[this.time].length-1) {
-                                this.itemNo = this.top[this.time].length-1;
-                            }
-                        }
-                    }
-               }else{
-                    this.itemNo++;
-                   if (this.itemNo>this.top[this.time].length-1) {
-                    this.itemNo = this.top[this.time].length-1;
-                    }
-               }
-               
-            },
-            left() {
-                if (this.isTop) {
-                    this.isTop = false;
-                    this.$emit("Center", 'left');
-                    this.isShow = false;
-                } else {
-                    if (this.itemNo==0||this.itemNo==3||this.itemNo==6) {
-                        if (this.time==0) {
-                            this.$emit("Center", 'left');
-                            this.isShow = false;
-                        }else{
-                            this.time--;
-                            this.itemNo+=2;
-                        }
-                    } else {
-                        this.itemNo--;
-                    }
-                }
-            },
-            allDelCollect() {
-                    let url = "http://47.97.96.103/uds/cloud/collection/del?version=1"
-                    let data = {
-                    siteId: yh.siteId,
-                    userId: yh.userId,
-                    }
-                    api.post(url, data, (res) => {
-                    console.log(res);
-                    if (res.mes === "ok")
-                        console.log("删除收藏成功");
-                    })
-                },
-            KeyEnter() {
-                if (this.isTop) {
-                    this.isShow = false;
-                    this.isTop = false;
-                    if (this.isHis) {
-                        localStorage.removeItem("historyList")
-                    } else {
-                        this.allDelCollect();
-                    }
-                    this.$emit("Center", 'KeyEnter', "", "","clear");
-                } else {
-                    let url = this.top[this.time][this.itemNo];
-                    if (this.isHis) {
-                        c.setParentPageType('0601');
-                        c.setParentPageId('101-1');
-                        c.routerSkip(url.jsonUrl, "1",url.layout, {type:'history'}, this.$router);
-                    } else {
-                        c.setParentPageType('0501');
-                        c.setParentPageId('103-1');
-                        if (url.collectType == 2) {
-                                c.routerSkip(url.relateUrl, '5', url.relateLayout,'收藏跳入', this.$router);
-                            }else{
-                                c.routerSkip(url.relateUrl, "1",url.relateLayout, {type:'history'}, this.$router);
-                            }
-                        // c.routerSkip(url, "1", '', this.$router);
-                        // this.$emit("Center", 'KeyEnter', url, "fall");
-                        //            收藏点击
-                    }
-                    // this.isShow = false;
-                }
-                
-            },
-            change(pos){
-                this.isList = pos;
-            },
-            updateStast(pos) {
-                this.isShow = true;
-                if (pos == 'right') {
-                    this.itemNo = 0;
-                    this.op = 0;
-                }
-                if (pos == 'remove' || pos == 'back') {
-                    //            弹出页返回
-                    this.itemNo = 0;
-                    this.op = 0;
-                    this.$emit("Center", 'json');
-                }
-            },
-            cEleOffsetTop(ele) {
-                let fEleDistance = $(ele).offset();
-                let realHeight = fEleDistance.top + 275;
-                return realHeight;
-            },
-            split_array(arr, len){
-                var a_len = arr.length;
-                var result = [];    
-                for(var i=0;i<a_len;i+=len)
-                {    
-                result.push(arr.slice(i,i+len));    
-                }     
-                return result;
-            },
-        },
-        watch: {
-            jsonUrl() {
-                this.top = this.split_array(this.jsonUrl,9);
-                this.list = this.top.length-1;
-                this.time = 0;
-                try {
-                    if (this.top[0][0].bookMarkTime) {
-                        this.isHis = true;
-                    } else {
-                        this.isHis = false;
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-                this.op = 0;
-            }
-        },
-        components: {
-
-        }
+// import {
+//     bp as bi
+// } from '../js/ga.js'
+import { client as yh } from '../../js/client.js';
+import c from '../../js/common.js'
+export default {
+  props: ['jsonUrl'],
+  data () {
+    return {
+      num: 1,
+      itemNo: 0,
+      op: 0,
+      isHis: false,
+      isTop: false,
+      placeholder: require('../../assets/img_loading_160x230.png'),
+      initScore: require('../../assets/corner_mark.png'),
+      isShow: false,
+      numop: false,
+      timer: null,
+      time: 0,
+      CLEARTIMES: null,
+      userToken: '',
+      top: '',
+      list: '',
+      isList: true,
+      text_list: '暂无资产'
     }
+  },
+  activated (){
+    if (!this.$route.meta.keep) {
+      this.isShow = false;
+      this.isTop = false;
+      this.time = 0;
+      this.itemNo = 0;
+    }
+  },
+  created () {
+  },
+  mounted () {
+
+  },
+  updated () {},
+
+  methods: {
+    keyCode (kc) {
+      if (kc == 'KeyBack') {
+        this.$router.push({ path: '/jx/index' });
+      } else if (kc == 'right') {
+        this.right();
+      } else if (kc == 'left') {
+        this.left();
+      } else if (kc == 'down') {
+        this.down();
+      } else if (kc == 'up') {
+        this.up();
+      } else if (kc == 'KeyEnter') {
+        this.KeyEnter();
+      }
+    },
+    down () {
+      if (this.isTop) {
+        this.isTop = false;
+      } else {
+        if (this.itemNo == 6 || this.itemNo == 7 || this.itemNo == 8) {
+
+        } else {
+          this.itemNo += 3;
+          if (this.itemNo > this.top[this.time].length - 1) {
+            this.itemNo = this.top[this.time].length - 1;
+          }
+        }
+      }
+    },
+    up () {
+      if (this.isTop) return;
+      if (this.itemNo == 0 || this.itemNo == 1 || this.itemNo == 2) {
+        this.isTop = true;
+      } else {
+        this.itemNo -= 3;
+      }
+    },
+    right () {
+      if (this.isTop) return;
+      if (this.itemNo == 2 || this.itemNo == 5 || this.itemNo == 8) {
+        if (this.itemNo > this.top[this.time].length - 1) {
+          this.itemNo = this.top[this.time].length - 1;
+        } else {
+          if (this.time >= this.top.length - 1) {
+
+          } else {
+            this.time++;
+            this.itemNo -= 2;
+            if (this.itemNo > this.top[this.time].length - 1) {
+              this.itemNo = this.top[this.time].length - 1;
+            }
+          }
+        }
+      } else {
+        this.itemNo++;
+        if (this.itemNo > this.top[this.time].length - 1) {
+          this.itemNo = this.top[this.time].length - 1;
+        }
+      }
+    },
+    left () {
+      if (this.isTop) {
+        this.isTop = false;
+        this.$emit('Center', 'left');
+        this.isShow = false;
+      } else {
+        if (this.itemNo == 0 || this.itemNo == 3 || this.itemNo == 6) {
+          if (this.time == 0) {
+            this.$emit('Center', 'left');
+            this.isShow = false;
+          } else {
+            this.time--;
+            this.itemNo += 2;
+          }
+        } else {
+          this.itemNo--;
+        }
+      }
+    },
+    allDelCollect () {
+      let url = 'http://47.97.96.103/uds/cloud/collection/del?version=1'
+      let data = {
+        siteId: yh.siteId,
+        userId: yh.userId
+      }
+      api.post(url, data, (res) => {
+        console.log(res);
+        if (res.mes === 'ok') { console.log('删除收藏成功'); }
+      })
+    },
+    KeyEnter () {
+      if (this.isTop) {
+        this.isShow = false;
+        this.isTop = false;
+        if (this.isHis) {
+          localStorage.removeItem('historyList')
+        } else {
+          this.allDelCollect();
+        }
+        this.$emit('Center', 'KeyEnter', '', '', 'clear');
+      } else {
+        let url = this.top[this.time][this.itemNo];
+        if (this.isHis) {
+          c.setParentPageType('0601');
+          c.setParentPageId('101-1');
+          c.routerSkip(url.jsonUrl, '1', url.layout, {type: 'history'}, this.$router);
+        } else {
+          c.setParentPageType('0501');
+          c.setParentPageId('103-1');
+          if (url.collectType == 2) {
+            c.routerSkip(url.relateUrl, '5', url.relateLayout, '收藏跳入', this.$router);
+          } else {
+            c.routerSkip(url.relateUrl, '1', url.relateLayout, {type: 'history'}, this.$router);
+          }
+          // c.routerSkip(url, "1", '', this.$router);
+          // this.$emit("Center", 'KeyEnter', url, "fall");
+          //            收藏点击
+        }
+        // this.isShow = false;
+      }
+    },
+    change (pos){
+      this.isList = pos;
+    },
+    updateStast (pos) {
+      this.isShow = true;
+      if (pos == 'right') {
+        this.itemNo = 0;
+        this.op = 0;
+      }
+      if (pos == 'remove' || pos == 'back') {
+        //            弹出页返回
+        this.itemNo = 0;
+        this.op = 0;
+        this.$emit('Center', 'json');
+      }
+    },
+    cEleOffsetTop (ele) {
+      let fEleDistance = $(ele).offset();
+      let realHeight = fEleDistance.top + 275;
+      return realHeight;
+    },
+    split_array (arr, len){
+      var aLen = arr.length;
+      var result = [];
+      for (var i = 0; i < aLen; i += len) {
+        result.push(arr.slice(i, i + len));
+      }
+      return result;
+    }
+  },
+  watch: {
+    jsonUrl () {
+      this.top = this.split_array(this.jsonUrl, 9);
+      this.list = this.top.length - 1;
+      this.time = 0;
+      try {
+        if (this.top[0][0].bookMarkTime) {
+          this.isHis = true;
+        } else {
+          this.isHis = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      this.op = 0;
+    }
+  },
+  components: {
+
+  }
+}
 
 </script>

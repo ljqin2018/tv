@@ -10,7 +10,9 @@
     "build": "node build/build.js",
     "mock": "json-server --watch src/json/db.json",
     "mockdev": "npm run mock | npm run dev",
-    "stats": "webpack --config ./build/webpack.dev.conf.js --profile --json > stats.json"
+    "stats": "webpack --config ./build/webpack.dev.conf.js --profile --json > stats.json",
+    "lint": "eslint --ext .js --ext .jsx --ext .vue src/",
+    "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/"
   },
   "dependencies": {
     "vue": "^2.5.2",

@@ -18,14 +18,14 @@
         <div class="left-icon1" :class="{'accnone':time==list||list <= 0}"></div>
         <div class="btn_center">
             <ul class="his_ul" v-if="show">
-                <li v-for="(item,index) in top[time]" 
-                    :key="item.id" 
-                    :id="('Img'+index)" 
+                <li v-for="(item,index) in top[time]"
+                    :key="item.id"
+                    :id="('Img'+index)"
                     class="imgs">
-                    <lazy-image 
-                    :src="item.assetImg" 
-                    :placeholder='placeholder' 
-                    :initScore='initScore' 
+                    <lazy-image
+                    :src="item.assetImg"
+                    :placeholder='placeholder'
+                    :initScore='initScore'
                     :imgClass='HistoryImg' />
                     <div :class="{'hover':itemNo==index&& isActive}"></div>
                 </li>
@@ -58,7 +58,7 @@
         height: 100%;
         background: url(../../../static/images/special/915.png) no-repeat;
         background-size:100% 100%;
-        z-index: 99; 
+        z-index: 99;
         left: 0px;
         top: 0px;
     }
@@ -153,203 +153,201 @@
 </style>
 
 <script>
-    // import {
-    //     HTTPUtil as api
-    // } from '../fetch/api.js'
+// import {
+//     HTTPUtil as api
+// } from '../fetch/api.js'
 
-    // import {
-    //     bp as bi
-    // } from '../js/ga.js'
-    import c from '../../js/common.js'
-    
-    export default {
-        props: ['jsonUrl'],
-        data() {
-            return {
-                itemNo: 0,
-                op: 0,
-                isHis: false,
-                show: true,
-                HistoryImg: 'HistoryImg',
-                placeholder: require('../../assets/img_loading_160x230.png'),
-                initScore: require('../../assets/corner_mark.png'),
-                isShow: false,
-                numop: false,
-                timer: null,
-                time: 0,
-                pagination: 0,
-                CLEARTIMES:null,
-                userToken:'',
-                isActive:false,
-                top:'',
-                list:'',
-                isList:true,
-                text_list:'暂无资产，敬请期待'
-            }
-        },
-        created() {
-            
-        },
-        mounted() {
+// import {
+//     bp as bi
+// } from '../js/ga.js'
+import c from '../../js/common.js'
 
-        },
-        activated(){
-            if (this.$route.meta.keep) {
-            } else {
-              this.isShow = false;
-              this.isActive = false;
-              this.time =  0;
-              this.itemNo = 0;
-            }
-        },
-        updated() {
-            
-        },
-        methods: {
-            keyCode(kc) {
-                if (kc == "KeyBack") {
-                    this.$router.push({ path:'/jx/index'});
-                } else if (kc == "right") {
-                    this.right();
-                } else if (kc == "left") {
-                    this.left();
-                } else if (kc == "down") {
-                        this.down();
-                } else if (kc == "up") {
-                    this.up();
-                } else if (kc == "KeyEnter") {
-                    this.KeyEnter();
-                }
-            },
-            // addCss() {
-            //     $('#Img' + this.itemNo).addClass('box_border');
-            //     let p_title = $('.his_ul li').eq(this.itemNo).text();
-            //     if (p_title.length > 8) {
-            //         let id = '#Img' + this.itemNo;
-            //         let speed = 40;
-            //         const tab = document.querySelector(id + ' .s-title');
-            //         const tab1 = document.querySelector(id + ' .s-title-name');
-            //         const tab2 = document.querySelector(id + ' .s-title-temp');
-            //         tab.style.textOverflow = 'clip';
-            //         tab2.innerHTML = tab1.innerHTML;
-            //         clearInterval(this.timer);
-            //         this.timer = setInterval( function() {
-            //              if (tab2.offsetWidth - tab.scrollLeft < 0) {
-            //         tab.scrollLeft = 1; // 上面的写法会导致滚动时突然抖动                    console.log(tab.scrollLeft);
-            //     } else {
-            //         tab.scrollLeft += 2;
-            //     }
-            //         }, speed);
-            //     }
-            // },
-            // removeCss() {
-            //     $('#Img' + this.itemNo).removeClass('box_border');
-            //     if (this.timer != 0) {
-            //         clearInterval(this.timer);
-            //         this.timer = 0;
-            //         let id = '#Img' + this.itemNo;
-            //         let tab = document.querySelector(id + ' .s-title');
-            //         document.querySelector(id + ' .s-title-temp').innerHTML = '';
-            //         tab.scrollLeft = 0;
-            //         tab.style.textOverflow = 'ellipsis';
-            //     }
-            // },
-            down() {
-                if (this.itemNo==7||this.itemNo==8||this.itemNo==6) return;
-                this.itemNo+=3;
-                if (this.itemNo>=this.top[this.time].length-1) {
-                    this.itemNo =this.top[this.time].length-1;
-                }
-            },
-            up() {
-                if (this.itemNo==0||this.itemNo==1||this.itemNo==2) return;
-               this.itemNo-=3; 
-            },
-            split_array(arr, len){
-                var a_len = arr.length;
-                var result = [];    
-                for(var i=0;i<a_len;i+=len)
-                {        
-                    result.push(arr.slice(i,i+len));    
-                }    
-                    return result;
-            },
-            right() {
-                if (this.itemNo==2||this.itemNo==5||this.itemNo==8) {
-                    if (this.time>=this.top.length-1){
-                        return;
-                    }else{
-                        this.time++;
-                        this.itemNo-=2;
-                        if (this.itemNo>this.top[this.time].length-2) {
-                            this.itemNo = 0;
-                        }
-                    }
-                }else{
-                    if (this.itemNo>=this.top[this.time].length-1)return;
-                    this.itemNo++; 
-                }
-            },
-            left() {
-                if (this.itemNo <= 0 || this.itemNo ==3||this.itemNo==6) {
-                    if (this.time<=0) {
-                        this.isShow = false;
-                        this.isActive = false;
-                        this.$emit('Center', 'left');
-                        this.itemNo = -1;
-                    } else {
-                        this.time--;
-                        this.itemNo+=2;
-                    }
-                }else{
-                    if (this.jsonUrl.length == 0) {
-                    this.$emit('Center', 'left');
-                    this.isShow = false;
-                    this.isActive = false;
-                    } else {
-                        this.itemNo--;
-                    }
-                }
-                
-            },
-            KeyEnter() {
-                let url = this.top[this.time][this.itemNo];
-                c.routerSkip(url.jsonUrl, "1", url.layout,{type:'filter'}, this.$router);
-            },
-            updateStast(pos) {
-                this.isShow = true;
-                this.isActive = true;
-                if (pos == 'right') {
-                    this.itemNo = 0;
-                    this.op = 0;
-                }
-            },
-            cEleOffsetTop(ele) {
-                let fEleDistance = $(ele).offset();
-                let realHeight = fEleDistance.top + 275;
-                return realHeight;
-            },
-            change(br){
-                if (br) {
-                this.isList = true;
-                } else {
-                this.isList = false;
-                }
-            },
-            
-        },
-        
-        watch: {
-            jsonUrl() {
-                this.pagination = Math.floor(this.jsonUrl.length/ 9);
-                this.op = 0;
-                this.top = this.split_array(this.jsonUrl, 9);
-                this.list = this.top.length-1;
-            }
-        },
-        components: {
-
-        }
+export default {
+  props: ['jsonUrl'],
+  data () {
+    return {
+      itemNo: 0,
+      op: 0,
+      isHis: false,
+      show: true,
+      HistoryImg: 'HistoryImg',
+      placeholder: require('../../assets/img_loading_160x230.png'),
+      initScore: require('../../assets/corner_mark.png'),
+      isShow: false,
+      numop: false,
+      timer: null,
+      time: 0,
+      pagination: 0,
+      CLEARTIMES: null,
+      userToken: '',
+      isActive: false,
+      top: '',
+      list: '',
+      isList: true,
+      text_list: '暂无资产，敬请期待'
     }
+  },
+  created () {
+
+  },
+  mounted () {
+
+  },
+  activated (){
+    if (this.$route.meta.keep) {
+    } else {
+      this.isShow = false;
+      this.isActive = false;
+      this.time = 0;
+      this.itemNo = 0;
+    }
+  },
+  updated () {
+
+  },
+  methods: {
+    keyCode (kc) {
+      if (kc == 'KeyBack') {
+        this.$router.push({ path: '/jx/index' });
+      } else if (kc == 'right') {
+        this.right();
+      } else if (kc == 'left') {
+        this.left();
+      } else if (kc == 'down') {
+        this.down();
+      } else if (kc == 'up') {
+        this.up();
+      } else if (kc == 'KeyEnter') {
+        this.KeyEnter();
+      }
+    },
+    // addCss() {
+    //     $('#Img' + this.itemNo).addClass('box_border');
+    //     let p_title = $('.his_ul li').eq(this.itemNo).text();
+    //     if (p_title.length > 8) {
+    //         let id = '#Img' + this.itemNo;
+    //         let speed = 40;
+    //         const tab = document.querySelector(id + ' .s-title');
+    //         const tab1 = document.querySelector(id + ' .s-title-name');
+    //         const tab2 = document.querySelector(id + ' .s-title-temp');
+    //         tab.style.textOverflow = 'clip';
+    //         tab2.innerHTML = tab1.innerHTML;
+    //         clearInterval(this.timer);
+    //         this.timer = setInterval( function() {
+    //              if (tab2.offsetWidth - tab.scrollLeft < 0) {
+    //         tab.scrollLeft = 1; // 上面的写法会导致滚动时突然抖动                    console.log(tab.scrollLeft);
+    //     } else {
+    //         tab.scrollLeft += 2;
+    //     }
+    //         }, speed);
+    //     }
+    // },
+    // removeCss() {
+    //     $('#Img' + this.itemNo).removeClass('box_border');
+    //     if (this.timer != 0) {
+    //         clearInterval(this.timer);
+    //         this.timer = 0;
+    //         let id = '#Img' + this.itemNo;
+    //         let tab = document.querySelector(id + ' .s-title');
+    //         document.querySelector(id + ' .s-title-temp').innerHTML = '';
+    //         tab.scrollLeft = 0;
+    //         tab.style.textOverflow = 'ellipsis';
+    //     }
+    // },
+    down () {
+      if (this.itemNo == 7 || this.itemNo == 8 || this.itemNo == 6) return;
+      this.itemNo += 3;
+      if (this.itemNo >= this.top[this.time].length - 1) {
+        this.itemNo = this.top[this.time].length - 1;
+      }
+    },
+    up () {
+      if (this.itemNo == 0 || this.itemNo == 1 || this.itemNo == 2) return;
+      this.itemNo -= 3;
+    },
+    split_array (arr, len){
+      var aLen = arr.length;
+      var result = [];
+      for (var i = 0; i < aLen; i += len) {
+        result.push(arr.slice(i, i + len));
+      }
+      return result;
+    },
+    right () {
+      if (this.itemNo == 2 || this.itemNo == 5 || this.itemNo == 8) {
+        if (this.time >= this.top.length - 1){
+
+        } else {
+          this.time++;
+          this.itemNo -= 2;
+          if (this.itemNo > this.top[this.time].length - 2) {
+            this.itemNo = 0;
+          }
+        }
+      } else {
+        if (this.itemNo >= this.top[this.time].length - 1) return;
+        this.itemNo++;
+      }
+    },
+    left () {
+      if (this.itemNo <= 0 || this.itemNo == 3 || this.itemNo == 6) {
+        if (this.time <= 0) {
+          this.isShow = false;
+          this.isActive = false;
+          this.$emit('Center', 'left');
+          this.itemNo = -1;
+        } else {
+          this.time--;
+          this.itemNo += 2;
+        }
+      } else {
+        if (this.jsonUrl.length == 0) {
+          this.$emit('Center', 'left');
+          this.isShow = false;
+          this.isActive = false;
+        } else {
+          this.itemNo--;
+        }
+      }
+    },
+    KeyEnter () {
+      let url = this.top[this.time][this.itemNo];
+      c.routerSkip(url.jsonUrl, '1', url.layout, {type: 'filter'}, this.$router);
+    },
+    updateStast (pos) {
+      this.isShow = true;
+      this.isActive = true;
+      if (pos == 'right') {
+        this.itemNo = 0;
+        this.op = 0;
+      }
+    },
+    cEleOffsetTop (ele) {
+      let fEleDistance = $(ele).offset();
+      let realHeight = fEleDistance.top + 275;
+      return realHeight;
+    },
+    change (br){
+      if (br) {
+        this.isList = true;
+      } else {
+        this.isList = false;
+      }
+    }
+
+  },
+
+  watch: {
+    jsonUrl () {
+      this.pagination = Math.floor(this.jsonUrl.length / 9);
+      this.op = 0;
+      this.top = this.split_array(this.jsonUrl, 9);
+      this.list = this.top.length - 1;
+    }
+  },
+  components: {
+
+  }
+}
 
 </script>

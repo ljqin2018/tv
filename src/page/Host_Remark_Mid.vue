@@ -12,7 +12,7 @@
             :src='top[index].elementImg'
             :placeholder='placeholder'
           />
-    <div :class="{'hover':itemNo==index&&isActive}"></div> 
+    <div :class="{'hover':itemNo==index&&isActive}"></div>
     </div>
     <keyDo
       v-on:listenKeyCode="keyCode"
@@ -30,7 +30,7 @@
         width: 373px;
         height: 128px;
         background: url(../../static/images/category/mid.png) no-repeat;
-        background-size:100% 100%; 
+        background-size:100% 100%;
         margin-right: 20px;
         position: relative;
     }
@@ -50,9 +50,9 @@ import { mapGetters } from 'vuex';
 import { bp as bi } from '../js/ga.js';
 import { hp } from '../util/dom.js';
 import { yst } from '../js/yst.js';
-import c from "../js/common.js";
+import c from '../js/common.js';
 export default {
-  props: ['initData','itemSort'],
+  props: ['initData', 'itemSort'],
   name: 'remark_mid',
   data: function () {
     return {
@@ -72,14 +72,14 @@ export default {
       ],
       isShow: false, // 是否注册键值
       isActive: false, // 是否被激活,
-      itemNo:0,
+      itemNo: 0,
       load_start: 0,
       load_time: 0,
-      eleId:"",
+      eleId: ''
     };
   },
   computed: {
-    ...mapGetters(['behindParams', 'navpos','categorys'])
+    ...mapGetters(['behindParams', 'navpos', 'categorys'])
   },
   created () {
     this.load_start = new Date() - 0;
@@ -112,32 +112,32 @@ export default {
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'back');
     },
-      enter(){
+    enter (){
       let posId = this.itemSort + '0' + (this.itemNo + 1);
       let columnId = '0' + this.navpos;
       c.setPosition(columnId, posId); // 保存推荐位置
       c.setParentPageType('0101');
       c.setParentPageId(this.categorys[this.navpos].catId);
       this.clickPage();
-      c.routerSkip(this.top[this.itemNo].jsonUrl,this.top[this.itemNo].elementType,this.top[this.itemNo].layout,{},this.$router);
+      c.routerSkip(this.top[this.itemNo].jsonUrl, this.top[this.itemNo].elementType, this.top[this.itemNo].layout, {}, this.$router);
     },
-    right(){
-      if (this.itemNo>=2) {
-        return;
+    right (){
+      if (this.itemNo >= 2) {
+
       } else {
         this.itemNo++;
       }
     },
-    left(){
-      if(this.itemNo<=0)return;
+    left (){
+      if (this.itemNo <= 0) return;
       this.itemNo--;
     },
-    up(){
+    up (){
       this.isActive = false;
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'up');
     },
-    down(){
+    down (){
       this.isActive = false;
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'down');
@@ -189,7 +189,7 @@ export default {
         this.isActive = true;
         this.pos = pos;
       }
-    },
+    }
   },
   watch: {
     initData () {

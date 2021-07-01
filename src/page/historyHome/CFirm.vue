@@ -97,26 +97,30 @@
 
 </style>
 
-<template> 
+<template>
   <div class="yy-confirm" v-show="visible">
     <div class="bg"></div>
     <div class="yy-container" :style="{width: width}">
       <div class="header" v-if="mx">
-        <i class="iconfont" style="font-size: 24px;line-height: 50px">&#xe6a3</i>
+        <!-- <i class="iconfont" style="font-size: 24px;line-height: 50px">&#xe6a3</i> -->
+        <i class="iconfont" style="font-size: 24px;line-height: 50px"></i>
           视频管理
       </div>
 
       <div class="header" v-else>
-        <i class="iconfont" style="font-size: 24px;line-height: 50px">&#xe6a3</i>
+        <!-- <i class="iconfont" style="font-size: 24px;line-height: 50px">&#xe6a3</i> -->
+        <i class="iconfont" style="font-size: 24px;line-height: 50px"></i>
         视频管理
       </div>
       <slot name="footer">
         <div class="yy-footer" slot="footer">
           <a href="javscript:void(0)" class="yy-btn make-sure select-on">视频详情
-            <i class="iconfont" style="font-size: 22px;line-height: 50px">&#xe98c</i>
+            <!-- <i class="iconfont" style="font-size: 22px;line-height: 50px">&#xe98c</i> -->
+            <i class="iconfont" style="font-size: 22px;line-height: 50px"></i>
           </a>
           <a href="javscript:void(0)" class="yy-btn cancel">删除视频
-            <i class="iconfont" style="font-size: 22px;line-height: 50px">&#xe606</i>
+            <!-- <i class="iconfont" style="font-size: 22px;line-height: 50px">&#xe606</i> -->
+            <i class="iconfont" style="font-size: 22px;line-height: 50px"></i>
           </a>
         </div>
       </slot>
@@ -126,149 +130,148 @@
 </template>
 
 <script>
-  import {
-    mapGetters
-  } from 'vuex'
-  import {
-    HTTPUtil as api
-  } from '../../fetch/api.js'
-  import {
-    client as yh
-  } from '../../js/client.js'
-  import c from '../../js/common.js'
+import {
+  mapGetters
+} from 'vuex'
+import {
+  HTTPUtil as api
+} from '../../fetch/api.js'
+import {
+  client as yh
+} from '../../js/client.js'
+import c from '../../js/common.js'
 
-
-  export default {
-    data: function () {
-      return {
-        width: {
-          type: String,
-          value: '360px'
-        },
-        title: {
-          type: String,
-          value: '明星管理',
-          value2: '明星详情',
-          value3: '删除明星'
-        },
-        isShow: false,
-        addRemver: 0,
-        catCode: "",
-        act: true,
-        num: 0,
-        urlss: '',
-        name: "CFirm",
-        jsonUrl: '',
-        asID: '',
-        usename: '',
-        zt: true,
-        visible: false,
-        enterType:4,
-        mx:true,
-        userToken:''
-
-      }
-    },
-    methods: {
-
-      keyCode(kc) {
-        if (kc == "left") {
-          this.left();
-        } else if (kc == "right") {
-          this.right();
-        } else if (kc == "KeyEnter") {
-          this.KeyEnter();
-        } else if (kc == "KeyBack") {
-          this.KeyBack();
-        }
+export default {
+  data: function () {
+    return {
+      width: {
+        type: String,
+        value: '360px'
       },
-      KeyBack() {
-        this.visible = false;
-        this.isShow = false;
-        console.log(this.usename);
-        this.$emit("listernpopup", false, this.usename, 'back');
+      title: {
+        type: String,
+        value: '明星管理',
+        value2: '明星详情',
+        value3: '删除明星'
       },
-      KeyEnter() {
-        this.visible = false;
-        this.isShow = false;
-        if (this.num == 0) {
-          //          收藏
-          this.addRemver = 1;
-            let obj ={
-              enterType: this.enterType
-            };
-          if (!this.zt) {
-              //              跳转详情
-                console.log(this.jsonUrl);
-              c.routerSkip(this.jsonUrl, "1",this.urlss.layout, obj, this.$router);
-//            else {
-//              c.routerSkip(this.jsonUrl, "2", '', this.$router);
-//            }
-          } else {
-            if (this.urlss.collectType == 2) {
-              c.routerSkip(this.jsonUrl, '5', '','', this.$router);
-            } else {
-              c.routerSkip(this.jsonUrl, '4', '', '', this.$router);
-            }
-          }
-          if (this.usename == 0) {
-            localStorage.setItem('favColl','收藏');
-          }else{
-            localStorage.setItem('favColl','历史');
-          }
-        } else {
-          this.addRemver = 2;
-          //          删除
-          if (this.usename == 0) {
-              let id = this.asID;
-          } else {
-              // alert('删除历史')
-          }
-        }
-      },
-      right() {
-        this.num++;
-        if (this.num > 1) {
-          this.num = 1
-        }
-        $('.make-sure').removeClass('select-on');
-        $('.cancel').addClass('select-on');
-      },
-      left() {
-        this.num--;
-        if (this.num < 0) {
-          this.num = 0
-        }
-        $('.cancel').removeClass('select-on');
-        $('.make-sure').addClass('select-on');
-      },
-      updateStast(url, Id, name, type, actor) {
-        console.log(url, Id, name + '过来的数据');
-        this.num = 0;
-        $('.cancel').removeClass('select-on');
-        $('.make-sure').addClass('select-on');
-        this.isShow = true;
-        this.visible = true;
-        this.urlss = url;
-        if (name == 0) {
-          this.jsonUrl = url.relateUrl;
-        } else {
-          this.jsonUrl = url.jsonUrl;
-        }
-        this.asID = url.relateId;
-        this.catCode = type;
-        this.usename = name;
-        this.act = actor;
-        if (url.collectType == 2) {
-          this.zt = true;
-        } else {
-          this.zt = false;
-        }
-      },
-    },
-    components: {
+      isShow: false,
+      addRemver: 0,
+      catCode: '',
+      act: true,
+      num: 0,
+      urlss: '',
+      name: 'CFirm',
+      jsonUrl: '',
+      asID: '',
+      usename: '',
+      zt: true,
+      visible: false,
+      enterType: 4,
+      mx: true,
+      userToken: ''
 
     }
+  },
+  methods: {
+
+    keyCode (kc) {
+      if (kc == 'left') {
+        this.left();
+      } else if (kc == 'right') {
+        this.right();
+      } else if (kc == 'KeyEnter') {
+        this.KeyEnter();
+      } else if (kc == 'KeyBack') {
+        this.KeyBack();
+      }
+    },
+    KeyBack () {
+      this.visible = false;
+      this.isShow = false;
+      console.log(this.usename);
+      this.$emit('listernpopup', false, this.usename, 'back');
+    },
+    KeyEnter () {
+      this.visible = false;
+      this.isShow = false;
+      if (this.num == 0) {
+        //          收藏
+        this.addRemver = 1;
+        let obj = {
+          enterType: this.enterType
+        };
+        if (!this.zt) {
+          //              跳转详情
+          console.log(this.jsonUrl);
+          c.routerSkip(this.jsonUrl, '1', this.urlss.layout, obj, this.$router);
+          //            else {
+          //              c.routerSkip(this.jsonUrl, "2", '', this.$router);
+          //            }
+        } else {
+          if (this.urlss.collectType == 2) {
+            c.routerSkip(this.jsonUrl, '5', '', '', this.$router);
+          } else {
+            c.routerSkip(this.jsonUrl, '4', '', '', this.$router);
+          }
+        }
+        if (this.usename == 0) {
+          localStorage.setItem('favColl', '收藏');
+        } else {
+          localStorage.setItem('favColl', '历史');
+        }
+      } else {
+        this.addRemver = 2;
+        //          删除
+        if (this.usename == 0) {
+          let id = this.asID;
+        } else {
+          // alert('删除历史')
+        }
+      }
+    },
+    right () {
+      this.num++;
+      if (this.num > 1) {
+        this.num = 1
+      }
+      $('.make-sure').removeClass('select-on');
+      $('.cancel').addClass('select-on');
+    },
+    left () {
+      this.num--;
+      if (this.num < 0) {
+        this.num = 0
+      }
+      $('.cancel').removeClass('select-on');
+      $('.make-sure').addClass('select-on');
+    },
+    updateStast (url, Id, name, type, actor) {
+      console.log(url, Id, name + '过来的数据');
+      this.num = 0;
+      $('.cancel').removeClass('select-on');
+      $('.make-sure').addClass('select-on');
+      this.isShow = true;
+      this.visible = true;
+      this.urlss = url;
+      if (name == 0) {
+        this.jsonUrl = url.relateUrl;
+      } else {
+        this.jsonUrl = url.jsonUrl;
+      }
+      this.asID = url.relateId;
+      this.catCode = type;
+      this.usename = name;
+      this.act = actor;
+      if (url.collectType == 2) {
+        this.zt = true;
+      } else {
+        this.zt = false;
+      }
+    }
+  },
+  components: {
+
   }
+}
 
 </script>

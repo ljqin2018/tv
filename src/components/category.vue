@@ -73,8 +73,8 @@
   background-size: 100% 100%;
   width: 18px;
   height: 18px;
-  margin-top:14px; 
-  margin-left:30px; 
+  margin-top:14px;
+  margin-left:30px;
 }
 .systembar ul li .mas{
   position: absolute;
@@ -89,7 +89,7 @@
   height: 614px;
   overflow: hidden;
   background: url("../../static/images/category/1815.png") no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
 }
 
 .boxBg{
@@ -100,7 +100,7 @@
   height: 614px;
   overflow: hidden;
   background: url("../../static/images/category/1814.png") no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
 }
 
 .scroll-box {
@@ -119,7 +119,7 @@
 
 .yh-segmented-control.yh-scroll-wrapper {
   height: 38px;
-  margin-bottom:14px; 
+  margin-bottom:14px;
 }
 
 .yh-segmented-control {
@@ -168,7 +168,7 @@
   list-style: none;
   float: left;
   background: url(../../static/images/category/1906.png) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
   margin-left: -34px;
   width: 123px;
   height: 58px;
@@ -184,7 +184,7 @@
 
 .systembar li.hover {
   background: url(../../static/images/category/1660.png) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
 }
 
 .yh-scroll {
@@ -286,12 +286,12 @@ export default {
       isShow: true,
       currentData: {},
       isActive: 0,
-      Acti:0,
+      Acti: 0,
       isSelect: -1,
       lastId: 0,
       Panel_id: '',
       Recommend_id: '',
-      isPlay:true
+      isPlay: true
     };
   },
   created () {
@@ -343,7 +343,6 @@ export default {
           _this.currentData = _this.navBar[0];
         }
       });
-      
     },
     keyCode (kc) {
       if (kc == 'KeyBack') {
@@ -354,14 +353,14 @@ export default {
         this.right();
       } else if (kc == 'down') {
         this.down();
-      }else if (kc == 'up') {
+      } else if (kc == 'up') {
         this.up();
       } else if (kc == 'KeyEnter') {
         if (this.position == 1) {
-          if (this.itemNo==0) {
-            if(this.isPlay){
-            this.$refs.childContent.isremove();
-            } 
+          if (this.itemNo == 0) {
+            if (this.isPlay){
+              this.$refs.childContent.isremove();
+            }
           }
           this.clickPage();
           if (this.sNo == 0) {
@@ -401,7 +400,7 @@ export default {
             });
             // 修改
           }
-        }else if(this.position == 2){
+        } else if (this.position == 2){
           bi.end('0102');
           this.isShow = false;
           window.location.href = 'http://112.18.251.100/sichuan/select?backType=dianjing';
@@ -436,13 +435,13 @@ export default {
       return nian + '-' + yue + '-' + ri + ' ' + shi + ':' + fen + ':' + miao;
     },
     back () {
-      setTimeout(()=>{   
+      setTimeout(() => {
         this.$refs.firm.updateStast(true);
         this.isShow = false;
-        if(this.isPlay){
+        if (this.isPlay){
           this.$refs.childContent.isPlays();
         }
-      },600)
+      }, 600)
     },
     left () {
       if (this.position == 0) {
@@ -457,12 +456,12 @@ export default {
         // }
         this.$store.commit('GET_NAVPOS', this.itemNo);
         this.$lazyImages.removeAll();
-      }else if (this.position == 1) {
-        if (this.sNo>0) {
-          this.sNo--;          
+      } else if (this.position == 1) {
+        if (this.sNo > 0) {
+          this.sNo--;
         }
-      }else if(this.position == 2){
-        // document.querySelector('.to-shaoer-wrap').className = 'to-shaoer-wrap';       
+      } else if (this.position == 2){
+        // document.querySelector('.to-shaoer-wrap').className = 'to-shaoer-wrap';
         this.position = 0;
         this.isActive = 4;
       }
@@ -471,14 +470,14 @@ export default {
       if (this.position == 0) {
         if (this.itemNo >= this.navBar.length - 1) {
           this.position = 2;
-          // document.querySelector('.to-shaoer-wrap').className = 'to-shaoer-wrap active';       
+          // document.querySelector('.to-shaoer-wrap').className = 'to-shaoer-wrap active';
         } else {
           this.lastId = this.navBar[this.itemNo].catId;
           this.itemNo++;
-          if (this.itemNo>0) {
+          if (this.itemNo > 0) {
             this.isPlay = false;
           }
-          if (this.itemNo==1) {
+          if (this.itemNo == 1) {
             this.$refs.childContent.isPlays();
           }
           this.$store.commit('GET_NAVPOS', this.itemNo);
@@ -488,27 +487,27 @@ export default {
         if (this.sNo > 1) return;
         this.sNo++;
         this.$store.commit('GET_NAVPOS', this.itemNo + this.sNo + 1);
-      }else if(this.position == 2){
+      } else if (this.position == 2){
       }
     },
     down () {
       if (this.position == 1) {
-          this.position = 0;
-          this.isActive = this.Acti;
-          this.sNo = -1;
-          this.$store.commit('GET_NAVPOS', this.itemNo + this.sNo + 1);
-      }else{
-          this.isActive = -1;
-          // document.querySelectorAll('.systembar ul li')[0].className = '';
-          // document.querySelectorAll('.systembar ul li')[1].className = '';
-          // document.querySelectorAll('.systembar ul li')[2].className = '';
-          this.position = 0;
-          this.isShow = false;
-          this.$refs.childContent.updateStast(true, 'down', false);
+        this.position = 0;
+        this.isActive = this.Acti;
+        this.sNo = -1;
+        this.$store.commit('GET_NAVPOS', this.itemNo + this.sNo + 1);
+      } else {
+        this.isActive = -1;
+        // document.querySelectorAll('.systembar ul li')[0].className = '';
+        // document.querySelectorAll('.systembar ul li')[1].className = '';
+        // document.querySelectorAll('.systembar ul li')[2].className = '';
+        this.position = 0;
+        this.isShow = false;
+        this.$refs.childContent.updateStast(true, 'down', false);
       }
     },
-    up(){
-      if (this.position == 0 ||this.position ==2 ) {
+    up (){
+      if (this.position == 0 || this.position == 2) {
         this.Acti = this.isActive;
         this.isActive = -1;
         this.position = 1;
@@ -517,7 +516,7 @@ export default {
       }
     },
     navigation () {
-      console.log(arguments+"未知");
+      console.log(arguments + '未知');
       var show = arguments[0][2];
       this.isShow = show;
       this.isSelect = -1;
@@ -549,7 +548,7 @@ export default {
         bi.end('0101');
         yh.back();
       } else {
-        if(this.isPlay){
+        if (this.isPlay){
           this.$refs.childContent.isshows();
         }
         this.isShow = true;

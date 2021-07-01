@@ -62,7 +62,7 @@ import { mapGetters } from 'vuex';
 import { bp as bi } from '../js/ga.js';
 import { hp } from '../util/dom.js';
 import { yst } from '../js/yst.js';
-import c from "../js/common.js";
+import c from '../js/common.js';
 export default {
   props: ['initData', 'catCode', 'catId', 'itemSort'],
   name: 'assetListNotMore',
@@ -90,7 +90,6 @@ export default {
   },
   created () {
     this.load_start = new Date() - 0;
-    
   },
   beforeMount () {
     this.specialList = this.initData.elementList;

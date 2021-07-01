@@ -42,7 +42,7 @@ import { bp as bi } from '../js/ga.js';
 import { hp } from '../util/dom.js';
 import { yst } from '../js/yst.js';
 export default {
-  props: ['categoryData', 'focusId', 'lastId', 'itemSort','isPlay'],
+  props: ['categoryData', 'focusId', 'lastId', 'itemSort', 'isPlay'],
   name: 'recommond',
   data () {
     return {
@@ -71,7 +71,7 @@ export default {
     ])
   },
   activated () {
-    
+
   },
   updated () {
     this.$nextTick(function () {
@@ -216,7 +216,7 @@ export default {
     },
     getChildRef (id) {
       // 根据元素ID查找ref中的组件
-      console.log('getChildRef:'+id);
+      console.log('getChildRef:' + id);
       var childComponents = this.$refs.childDo;
       for (var i = 0; i < childComponents.length; i++) {
         console.log(childComponents[i].eleId);
@@ -309,25 +309,25 @@ export default {
         }
       }
     },
-    isBlay(){
+    isBlay (){
       // alert('播放');
       // if (this.isPlay) {
       //   this.getChildRef("203471").isPlayNow();
       // }
     },
-    isremove(){
+    isremove (){
       // alert("关闭播放器");
       // if (this.isPlay) {
       //   this.getChildRef("203471").removrplay();
       // }
     },
-    isPlays(){
+    isPlays (){
       // alert('隐藏')
       // if (this.isPlay) {
       //   this.getChildRef("203471").hideplay();
       // }
     },
-    isshows(){
+    isshows (){
       // alert('显示')
       // if (this.isPlay) {
       //   this.getChildRef("203471").isshowplay();

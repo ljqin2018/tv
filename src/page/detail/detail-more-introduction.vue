@@ -77,62 +77,62 @@
 </style>
 
 <script>
- import {
-    client as yh
-  } from '../../js/client.js'
-  export default {
-    props: ['isAlert'],
-    data() {
-      return {
-        isShow: false,
-        page: 0,
-        visible: false,
-        pageNum:0,
-        pageTotal:0,
-        isState:true,
+import {
+  client as yh
+} from '../../js/client.js'
+export default {
+  props: ['isAlert'],
+  data () {
+    return {
+      isShow: false,
+      page: 0,
+      visible: false,
+      pageNum: 0,
+      pageTotal: 0,
+      isState: true
+    }
+  },
+  methods: {
+    keyCode (kc) {
+      if (kc === 'down') {
+        this.down();
+      } else if (kc === 'up') {
+        this.up();
+      } else if (kc === 'left') {
+
+      } else if (kc === 'right') {
+
+      } else if (kc === 'KeyBack') {
+        if (this.isState){
+          // 需要显示播放器
+          console.log('需要显示播放器')
+          // yh.showPlayer();
+        }
+        this.visible = false;
+        this.isShow = false;
+        this.$emit('pressDown', 'introduction', 'back');
       }
     },
-    methods: {
-      keyCode(kc) {
-        if (kc === "down") {
-          this.down();
-        } else if (kc === "up") {
-          this.up();
-        } else if (kc === "left") {
-          return
-        } else if (kc === "right") {
-          return
-        } else if (kc === "KeyBack") {
-          if(this.isState){
-            // 需要显示播放器
-            console.log('需要显示播放器')
-            // yh.showPlayer();
-          }
-          this.visible = false;
-          this.isShow = false;
-          this.$emit('pressDown', "introduction", "back");
-        }
-      },
-      getKeyListen(state) {
-        this.visible = true;
-        this.isShow = true;
-        this.isState = state;
-        this.$nextTick(()=>{
-        let height =this.$refs.content.offsetHeight
+    getKeyListen (state) {
+      this.visible = true;
+      this.isShow = true;
+      this.isState = state;
+      this.$nextTick(() => {
+        let height = this.$refs.content.offsetHeight
         console.log(height);
         this.pageTotal = Math.floor(height / 245);
-        })
-      },
-      down() {
-        if(this.pageNum===this.pageTotal) return
-        this.pageNum++
-        this.$refs.content.style.marginTop= -this.pageNum*246 +"px";
-      },
-      up() {
-        if(this.pageNum===0) return
-        this.pageNum--
-        this.$refs.content.style.marginTop= -this.pageNum*246 +"px";
-      }
+      })
+    },
+    down () {
+      if (this.pageNum === this.pageTotal) return
+      this.pageNum++
+      this.$refs.content.style.marginTop = -this.pageNum * 246 + 'px';
+    },
+    up () {
+      if (this.pageNum === 0) return
+      this.pageNum--
+      this.$refs.content.style.marginTop = -this.pageNum * 246 + 'px';
     }
   }
+}
 </script>

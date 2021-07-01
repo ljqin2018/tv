@@ -5,7 +5,7 @@
     </div>
     <div class="game_topbox">
       <div id="game_box">
-        <div 
+        <div
           v-for="(item,index) in top"
           :key="item.id"
           :id="('ES'+index)"
@@ -86,10 +86,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import c from "../js/common.js";
+import c from '../js/common.js';
 import {yst} from '../js/yst.js';
 export default {
-  props: ['initData','itemSort'],
+  props: ['initData', 'itemSort'],
   name: 'games_scroll',
   data: function () {
     return {
@@ -108,11 +108,11 @@ export default {
       isActive: false, // 是否被激活,
       load_start: 0,
       load_time: 0,
-      list:'',
+      list: ''
     };
   },
   computed: {
-    ...mapGetters(['behindParams', 'navpos','categorys'])
+    ...mapGetters(['behindParams', 'navpos', 'categorys'])
   },
   created () {
     this.load_start = new Date() - 0;
@@ -120,7 +120,7 @@ export default {
   mounted () {
     this.load_time = new Date() - this.load_start;
     this.top = this.initData.elementList;
-    console.log("底部游戏导航");
+    console.log('底部游戏导航');
     this.list = this.top.length;
     this.eleId = this.initData.specialId;
   },
@@ -153,39 +153,39 @@ export default {
       ystObj.Load_status = 'success';
       yst.panelClick(ystObj);
     },
-    enter(){
+    enter (){
       let posId = this.itemSort + '0' + (this.itemNo + 1);
       let columnId = '0' + this.navpos;
       c.setPosition(columnId, posId); // 保存推荐位置
       c.setParentPageType('0101');
       c.setParentPageId(this.categorys[this.navpos].catId);
       this.clickPage();
-      c.routerSkip(this.top[this.itemNo].jsonUrl,this.top[this.itemNo].elementType,this.top[this.itemNo].layout,{},this.$router);
+      c.routerSkip(this.top[this.itemNo].jsonUrl, this.top[this.itemNo].elementType, this.top[this.itemNo].layout, {}, this.$router);
     },
     back () {
       this.isActive = false;
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'back');
     },
-    right(){
-      if (this.itemNo>=this.top.length-1) {
+    right (){
+      if (this.itemNo >= this.top.length - 1) {
         return;
       } else {
         this.itemNo++;
       }
       this.addscroll();
     },
-    left(){
-      if(this.itemNo<=0)return;
+    left (){
+      if (this.itemNo <= 0) return;
       this.itemNo--;
       this.addscroll();
     },
-    up(){
+    up (){
       this.isActive = false;
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'up');
     },
-    down(){
+    down (){
       this.isActive = false;
       this.isShow = false;
       this.$emit('pressDown', this.isShow, this.eleId, 'down');
@@ -198,15 +198,15 @@ export default {
         this.pos = pos;
       }
     },
-    addscroll(){
+    addscroll (){
       let top = this.cEleOffsetTop('ES' + this.itemNo);
-      var game = document.getElementById("game_box");
-      if (top>1100) {
-        game.style.marginLeft =  - (this.itemNo - 3) * 293 + "px"
+      var game = document.getElementById('game_box');
+      if (top > 1100) {
+        game.style.marginLeft = -(this.itemNo - 3) * 293 + 'px'
         // game.style.setProperty({'transform': 'translateX(-' + 164 * (this.itemNo-5) + 'px)','transition': 'all 0.3s'});
       }
-      if (top<173.9921875) {
-        game.style.marginLeft =  - (this.itemNo) * 293 + "px"
+      if (top < 173.9921875) {
+        game.style.marginLeft = -(this.itemNo) * 293 + 'px'
       }
     },
     cEleOffsetTop (ele) {
@@ -223,7 +223,7 @@ export default {
   watch: {
     initData () {
       this.top = this.initData.elementList;
-      console.log("底部游戏导航");
+      console.log('底部游戏导航');
       console.log(this.initData);
       this.eleId = this.initData.specialId;
     }

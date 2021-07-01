@@ -43,7 +43,7 @@
   </div>
 </template>
 <script type="text/javascript">
-import { client as yh} from '../js/client.js'; //播放器
+import { client as yh } from '../js/client.js'; // 播放器
 export default {
   data: function () {
     return {

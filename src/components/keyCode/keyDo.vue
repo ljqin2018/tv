@@ -49,7 +49,7 @@ export default {
     handleKeyCode (kc) {
       // if ($('.scroll-box').is(':animated')) {
       //   return;
-      // }  
+      // }
       kc = parseInt(kc)
       if (kc === 39 || kc === 5) {
         this.KeyRight()

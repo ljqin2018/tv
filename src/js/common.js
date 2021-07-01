@@ -1,5 +1,3 @@
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
-
 //  JavaScript常用方法
 
 // localStorage sessionStorage
@@ -45,7 +43,7 @@ export default {
   },
   startTime () {
     let current = new Date().getTime()
-    let app = { name: 'app', startTime: current }
+    let app = {name: 'app', startTime: current}
     localStorage.setItem('app', JSON.stringify(app))
   },
   settingPath (pathName, id) {
@@ -137,84 +135,84 @@ export default {
 
     return ''
   },
-  routerSkip(url, Type, layType, bp, route){ // 公共路由跳转
+  routerSkip (url, Type, layType, bp, route){ // 公共路由跳转
     // 路由跳转
-     console.log("路由:url:" + url + "===========路由Type:" + Type);
+    console.log('路由:url:' + url + '===========路由Type:' + Type);
     // 1：详情页 2：演员页 3：角色 4：专题   5:短视频  6：标签  7：分类 8:历史收藏 9：搜索 10：筛选
-     switch (Type) {
-        case "1": // 详情页
-          switch(layType){
-            case "Game_Zy":
-            route.push({name:"varietyDetail",params:{jsonUrl:url,bp:bp}});
+    switch (Type) {
+      case '1': // 详情页
+        switch (layType){
+          case 'Game_Zy':
+            route.push({name: 'varietyDetail', params: {jsonUrl: url, bp: bp}});
             break;
-            case "Host_Js":
-            route.push({name:"AnchorShotVideo",params:{jsonUrl:url,bp:bp}});
+          case 'Host_Js':
+            route.push({name: 'AnchorShotVideo', params: {jsonUrl: url, bp: bp}});
             break;
-            case "Detail_News":
-            route.push({name:"eventDetail",params:{jsonUrl:url,bp:bp}});
+          case 'Detail_News':
+            route.push({name: 'eventDetail', params: {jsonUrl: url, bp: bp}});
             break;
-          }
-          break;
-        case "2":// 演员列表页
-          route.push({name: "anchorDetail", params: {jsonUrl:url,bp:bp}});
-         break;
-       case "3":
-          console.log("暂无此页面");
-         break;
-       case "4":
-         switch(layType){
-          case "Subject_Detail_TP1":
-          route.push({name:"hotTopics",params:{jsonUrl:url,bp:bp}});
-          break;
-          case "Game_News":
-          route.push({name:"specialDj",params:{jsonUrl:url,bp:bp}});
-          break;
-          case "Game_Detail":
-          route.push({name:"gameDetail",params:{jsonUrl:url,bp:bp}});
-          break;
         }
         break;
-       case "5":
-         route.push({ name: "hotTopics", params: { jsonUrl: url, bp: bp }});
-         break;
-       case "6":
-         route.push({ name: "hotTopics", params: { jsonUrl: url, bp: bp } });
-         break;
-       case "7":
-       route.push({ name: "Screening", params: { jsonUrl: url, bp: bp } });
-         break;
-         case "8":
+      case '2':// 演员列表页
+        route.push({name: 'anchorDetail', params: {jsonUrl: url, bp: bp}});
+        break;
+      case '3':
+        console.log('暂无此页面');
+        break;
+      case '4':
+        switch (layType){
+          case 'Subject_Detail_TP1':
+            route.push({name: 'hotTopics', params: {jsonUrl: url, bp: bp}});
+            break;
+          case 'Game_News':
+            route.push({name: 'specialDj', params: {jsonUrl: url, bp: bp}});
+            break;
+          case 'Game_Detail':
+            route.push({name: 'gameDetail', params: {jsonUrl: url, bp: bp}});
+            break;
+        }
+        break;
+      case '5':
+        route.push({name: 'hotTopics', params: {jsonUrl: url, bp: bp}});
+        break;
+      case '6':
+        route.push({name: 'hotTopics', params: {jsonUrl: url, bp: bp}});
+        break;
+      case '7':
+        route.push({name: 'Screening', params: {jsonUrl: url, bp: bp}});
+        break;
+      case '8':
         window.location.href = url;
-         break;
-       case "9": // 搜索
-         route.push({ name: "vip", params: { jsonUrl: url, bp:bp} });
-         break;
-       case "10":// 筛选
-         route.push({ name: "Screening", params: { jsonUrl: url, bp: bp } });
-         break;
-        case "15": // 点播记录
-         route.push({ name: "history", params: { jsonUrl: url, bp: bp }});
-         break;
-        case "16": // 收藏记录
-        route.push({ name: "search", params: { jsonUrl: url, bp: bp ,type:'index'} });
-         break;
+        break;
+      case '9': // 搜索
+        route.push({name: 'vip', params: {jsonUrl: url, bp: bp}});
+        break;
+      case '10':// 筛选
+        route.push({name: 'Screening', params: {jsonUrl: url, bp: bp}});
+        break;
+      case '15': // 点播记录
+        route.push({name: 'history', params: {jsonUrl: url, bp: bp}});
+        break;
+      case '16': // 收藏记录
+        route.push({name: 'search', params: {jsonUrl: url, bp: bp, type: 'index'}});
+        break;
     }
   },
-  routerBack(route,type){ //路由返回方法
-    if(type){
-      if(type == 'search'){
-        route.push({name:'search'})
-      }else if(type == 'filter'){
-        route.push({name:'Screening'})
-      }else if(type == 'history'){
-        route.push({name:'History'})
-      }else if(type == 'hotTopics'){
-        route.push({name:'hotTopics'})
-      }else{
-        route.push({name:'index'})
+  routerBack (route, type){ // 路由返回方法
+    if (type){
+      if (type == 'search'){
+        route.push({name: 'search'})
+      } else if (type == 'filter'){
+        route.push({name: 'Screening'})
+      } else if (type == 'history'){
+        route.push({name: 'History'})
+      } else if (type == 'hotTopics'){
+        route.push({name: 'hotTopics'})
+      } else {
+        route.push({name: 'index'})
       }
-    }else{
-      route.push({name:'index'})
+    } else {
+      route.push({name: 'index'})
     }
   }
 }
